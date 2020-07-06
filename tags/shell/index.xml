@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shell on 爆肚的杂货铺</title>
+    <link>https://b40du.github.io/tags/shell/</link>
+    <description>Recent content in shell on 爆肚的杂货铺</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This is a customized copyright.</copyright>
+    <lastBuildDate>Thu, 14 May 2020 23:34:19 +0800</lastBuildDate>
+    
+	<atom:link href="https://b40du.github.io/tags/shell/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>笔记-Shell基础</title>
+      <link>https://b40du.github.io/posts/note-imooc-shell-basic/</link>
+      <pubDate>Thu, 14 May 2020 23:34:19 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/note-imooc-shell-basic/</guid>
+      <description>Shell编程（一） 一、Shell概述 1. Shell的介绍  Shell是一个命令行解释器，它为用户提供了一个向Linux内核发送请求以便运行程序的界面系统级程序，用户可以用Shell来启动、挂起、停止甚至是编写一些程序。 Shell还是一个功能强大的编程语言，易编写，易调试，灵活性较强。Shell是解释执行的脚本语言，在Shell中可以直接调用Linux系统命令。   2. Shell的分类  Shell的两种主要语法类型有Bourne和C，这两种语法彼此不兼容。Bourne家族主要包括sh、ksh、Bash、psh、zsh；C家族主要包括：csh、tcsh。  Bourne Shell：从1979年起Unix就开始使用Bourne Shell，Bourne Shell的主文件名为sh。 C Shell：C Shell主要在BSD版的Unix系统中使用，其语法和C语言相类似而得名   查看当前系统使用的shell echo $SHELL /bin/bash  Bash：Bash与sh兼容，现在使用的Linux就是使用Bash作为用户的基本Shell  3. Linux支持的Shell  /etc/shells # 打开这个文件 [root@localhost ~]# vi /etc/shells /bin/sh /bin/bash /sbin/nologin /bin/tcsh /bin/csh [root@localhost ~]# sh sh-4.1# exit exit [root@localhost ~]# csh [root@localhost ~]# exit # 进程管理的时候可以知道我们进入了哪个shell exit # 一个shell中可以调用其他shell，也可以调用子shell [root@localhost ~]# bash # windows中打开cmd，就是在Windows当中调用一个子的shell exit   二、脚本执行方式 2.</description>
+    </item>
+    
+  </channel>
+</rss>

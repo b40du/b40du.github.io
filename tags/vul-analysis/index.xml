@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>vul-analysis on 爆肚的杂货铺</title>
+    <link>https://b40du.github.io/tags/vul-analysis/</link>
+    <description>Recent content in vul-analysis on 爆肚的杂货铺</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This is a customized copyright.</copyright>
+    <lastBuildDate>Fri, 11 Oct 2019 16:38:33 +0800</lastBuildDate>
+    
+	<atom:link href="https://b40du.github.io/tags/vul-analysis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>漏洞分析 之 EFS Web Server 7.2 获取HTTP请求SEH缓冲区溢出</title>
+      <link>https://b40du.github.io/posts/report-vul-efs-web-server-7.2/</link>
+      <pubDate>Fri, 11 Oct 2019 16:38:33 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/report-vul-efs-web-server-7.2/</guid>
+      <description>1. 软件简介 Easy File Sharing Web Server（简易文件共享Web服务器）是一种Internet文件共享程序，允许我们在没有任何其他软件或服务的情况下托管安全的个人Web服务器。访问者可以通过Web浏览器（Internet Explorer，Netscape，Opera等）轻松上传/下载文件。
+因此，简单来说，它可以帮助我们与朋友或同事共享文件。这个基于Web的软件可以让我们将文件传送给任何拥有配置有浏览器的PC，而不用繁琐地安装多个软件。也可以让我们的同事或朋友轻松浏览用我的PC搭建的服务器并进行搜索，显示和/或下载经过我授予他们访问权限的文件。
+2. 漏洞复现 2.1 软件下载 Exploit-DB漏洞库地址：https://www.exploit-db.com/exploits/39008
+软件下载地址：https://www.exploit-db.com/apps/60f3ff1f3cd34dec80fba130ea481f31-efssetup.exe
+Python下载地址：https://www.python.org/ftp/python/2.7.16/python-2.7.16.msi
+2.2 环境搭建 安装Easy File Sharing Web Server 7.2
+安装成功后，打开桌面上的EFS软件，点击Try it!
+可以看到，EFS Web Server已经开始运行，此时在我们的本地建立了一个Web服务器，并开启了80端口和443端口。
+然后打开IE浏览器，在地址栏输入http://127.0.0.1/或者http://localhost/或者是EFS软件启动时显示的IP地址类型的http链接http://192.168.25.142
+此时我们可以看到，IE浏览器访问本地网页的时候，是正常显示的。
+如果我们的电脑没有Python环境，我们需要安装好Python环境，目的是为了方便之后我们使用Poc.py进行简易测试。
+然后我们检查一下Poc.py，确认无误。
+2.3 软件测试 接下来我们打开cmd.exe，并使用python执行Poc.py，输入参数，看看会发生什么。
+我们刷新刚才访问的IE浏览器界面，发现网页崩溃了。同时我们发现之前搭建本地Web环境的EFS软件已经退出运行了，看来是由于服务器崩溃导致的网页崩溃，而非本地浏览器的问题。
+此时基本上我们已经把漏洞复现了出来。
+但是我们也观察到了另外一个情况，按理说，xp系统如果程序遇到异常，会弹出一个错误对话框，并能够在其中查找到错误的类型以及内存地址，也就是Windows异常处理机制作用的显示形式。
+而此时此刻我们没有发现错误对话框，程序崩溃时反而直接自动退出了，因此我们需要思考一下，是不是程序的错误导致异常处理机制也产生了错误，这也是我们后面分析的一个重点。
+3. 漏洞分析 3.1 漏洞成因 Easy File Sharing Web Server 7.2 版本中存在缓冲区溢出漏洞。
+远程攻击者可发送GET数据包，由于软件中的fsws.exe在处理GET数据包的路径时，没有对路径内容进行检查，而是直接拼接传参，导致某些关键指针被覆盖，从而导致在软件使用的sqlite3.dll中执行某个函数时，由于引用了无效地址，进而触发SEH异常处理流程或覆盖SHE异常处理函数的指针，导致任意代码执行。
+因此，简单来说，远程攻击者可以发送GET数据包，用数据包中的长字符串利用该漏洞执行任意代码。
+接下来我们来回溯一下，分析该软件的详细过程。
+3.2 分析过程 首先我们附加EFS Web Server这个程序，按g运行，然后用cmd.exe执行我们从漏洞库下载的Poc.py，发现程序中断了，产生了异常。
+可以看到，这里执行了一个cmp的汇编指令，作用是比较后面两个操作数是否相等。比较的是1个四字节指针 [eax+4Ch]和0A29A697h地址上的内容，那么在比较的过程中，发现eax寄存器的值已经变成了41414141。显然这个地址不太像一个可读的地址。
+那不妨查看一下eax的值，在命令窗口输入dd eax。
+然后我们可以看到，在输入dd eax之后，发现内存空间里全部都是问号，eax值是一个不可读的地址。也就是说这个是空间没有被开辟出来导致的内存访问异常。
+接下来我们按g。
+执行过后，我们发现，eip指向41414141，这同样是一个不可读的地址，到这个时候我们已经发现41414141其实是我们之前构造的payload里面大写字母A的ASCII码。所以说，现在是由于程序的某处产生了错误，导致栈被覆盖。
+出现异常时，理论上程序会进入异常处理链进行异常处理，但是由于栈中的SEH链也被覆盖，导致这个链中存放的SEH异常处理函数的指针也被覆盖，因而eip指向的地址是41414141。
+而在异常处理中呢，会调用这个SEH中的异常处理指针，去执行异常处理函数。那么当这个指针被覆盖的时候，调用这个指针指向的地址如果被我们所控制，就能够按照我们的想法，去执行一些代码，这也是后面漏洞利用的一种方式。
+那么我们现在要分析一下，为什么[eax+0Ch]这个地址会被41414141覆盖。这个时候我们需要使用kb命令来查看一下之前堆栈调用的情况。</description>
+    </item>
+    
+  </channel>
+</rss>

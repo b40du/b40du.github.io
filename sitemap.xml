@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://b40du.github.io/categories/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/posts/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/upload-labs/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/categories/writeup/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/</loc>
+    <lastmod>2020-07-04T23:48:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/linux/</loc>
+    <lastmod>2020-05-14T23:34:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/shell/</loc>
+    <lastmod>2020-05-14T23:34:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2020-05-14T23:34:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/posts/note-imooc-shell-basic/</loc>
+    <lastmod>2020-05-14T23:34:19+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/php/</loc>
+    <lastmod>2020-05-11T23:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/posts/note-heima-php-basic/</loc>
+    <lastmod>2020-05-11T23:00:00+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/javascript/</loc>
+    <lastmod>2020-05-01T16:26:46+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/posts/note-heima-javascript-basic/</loc>
+    <lastmod>2020-05-01T16:26:46+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/network/</loc>
+    <lastmod>2020-04-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/protocol/</loc>
+    <lastmod>2020-04-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/posts/note-aqniu-network-engineer/</loc>
+    <lastmod>2020-04-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/tags/vul-analysis/</loc>
+    <lastmod>2019-10-11T16:38:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</loc>
+    <lastmod>2019-10-11T16:38:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/posts/report-vul-efs-web-server-7.2/</loc>
+    <lastmod>2019-10-11T16:38:33+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://b40du.github.io/about/</loc>
+  </url>
+  
+</urlset>

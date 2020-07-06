@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 爆肚的杂货铺</title>
+    <link>https://b40du.github.io/posts/</link>
+    <description>Recent content in Posts on 爆肚的杂货铺</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This is a customized copyright.</copyright>
+    <lastBuildDate>Sat, 04 Jul 2020 23:48:33 +0800</lastBuildDate>
+    
+	<atom:link href="https://b40du.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Writeup 之 Upload-Labs 魔改flag版</title>
+      <link>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</link>
+      <pubDate>Sat, 04 Jul 2020 23:48:33 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</guid>
+      <description>今日总结：  这次靶场主要是做这个有源码的靶场，所以理解源码的含义非常重要  上传实验室-p1  第一关很简单，直接上传1.php，发现前端js报错   推测是前端js检查文件后缀类型，查看js代码，发现js对文件后缀进行了判断   个人习惯直接在控制台重写这个函数而不是用插件，直接在控制台增加.php类型   上传完成后，复制上传文件的地址   使用菜刀进行连接   查看flag   flag{a6487868}
+ 上传实验室-p2  由于可以查看源码，直接看源码  发现后端在判断文件类型     我们尝试发一个1.php文件，但是改了centent-type类型   发现成功上传，复制上传文件的路径   使用菜刀连接，发现flag文件   找到flag   flag{5b323cff}
+ 上传实验室-p3  首先我们看源码，发现很多办法都失效了   那么我们尝试用php3试试，发现成功上传，然后复制上传文件路径   连接菜刀，发现flag文件   查看flag   flag{22e47e94}
+ 上传实验室-p4  首先我们看源码，发现很多办法都失效了    但是.</description>
+    </item>
+    
+    <item>
+      <title>笔记-Shell基础</title>
+      <link>https://b40du.github.io/posts/note-imooc-shell-basic/</link>
+      <pubDate>Thu, 14 May 2020 23:34:19 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/note-imooc-shell-basic/</guid>
+      <description>Shell编程（一） 一、Shell概述 1. Shell的介绍  Shell是一个命令行解释器，它为用户提供了一个向Linux内核发送请求以便运行程序的界面系统级程序，用户可以用Shell来启动、挂起、停止甚至是编写一些程序。 Shell还是一个功能强大的编程语言，易编写，易调试，灵活性较强。Shell是解释执行的脚本语言，在Shell中可以直接调用Linux系统命令。   2. Shell的分类  Shell的两种主要语法类型有Bourne和C，这两种语法彼此不兼容。Bourne家族主要包括sh、ksh、Bash、psh、zsh；C家族主要包括：csh、tcsh。  Bourne Shell：从1979年起Unix就开始使用Bourne Shell，Bourne Shell的主文件名为sh。 C Shell：C Shell主要在BSD版的Unix系统中使用，其语法和C语言相类似而得名   查看当前系统使用的shell echo $SHELL /bin/bash  Bash：Bash与sh兼容，现在使用的Linux就是使用Bash作为用户的基本Shell  3. Linux支持的Shell  /etc/shells # 打开这个文件 [root@localhost ~]# vi /etc/shells /bin/sh /bin/bash /sbin/nologin /bin/tcsh /bin/csh [root@localhost ~]# sh sh-4.1# exit exit [root@localhost ~]# csh [root@localhost ~]# exit # 进程管理的时候可以知道我们进入了哪个shell exit # 一个shell中可以调用其他shell，也可以调用子shell [root@localhost ~]# bash # windows中打开cmd，就是在Windows当中调用一个子的shell exit   二、脚本执行方式 2.</description>
+    </item>
+    
+    <item>
+      <title>笔记-PHP基础</title>
+      <link>https://b40du.github.io/posts/note-heima-php-basic/</link>
+      <pubDate>Mon, 11 May 2020 23:00:00 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/note-heima-php-basic/</guid>
+      <description>学习目标  掌握互联网的工作原理 掌握域名、DNS和IP地址之间的关系 理解hosts文件在互联网访问过程中的作用 理解静态网站和动态网站的区别 理解动态网站的服务器组成 了解PHP的工作过程 掌握PHP变量的使用方式 理解可变变量的概念 掌握可变变量的访问形式 理解变量的值传递和引用传递的区别  1 PHP简介 1.1 概述  PHP是HyperText Preprocessor的缩写，（超文本预处理器）是一种在服务器端运行的开源的脚本语言 LAMP组合（Linux，Apache，MySQL，PHP），这四个产品都是公开源代码的产品  php 是一门语言，用来做业务逻辑 apache 为PHP提供了运行环境 linux 为Apache的运行提供了平台 mysql 数据库用来存储数据 wamp
+windows+apache+ mysql +php 1.2 五个基本概念  静态网站和动态网站  静态页面：服务器不执行的页面 动态页面：服务器执行的页面  动态网站中可以存放静态页面
+  客户端和服务器端  客户端：浏览者 服务器端：给浏览者提供服务  端口和端口号  端口号的范围：0~65535  BS架构和CS架构  BS：通过浏览器去访问服务器
+b:browser（浏览器） s:server（服务器） 优点： 1. 只要有浏览器就可以访问 2. 开发成本低 缺点： 1. 开发的代码都放在服务器上 胖服务器-瘦客户端  所有的web都是BS架构的</description>
+    </item>
+    
+    <item>
+      <title>笔记-JavaScript基础</title>
+      <link>https://b40du.github.io/posts/note-heima-javascript-basic/</link>
+      <pubDate>Fri, 01 May 2020 16:26:46 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/note-heima-javascript-basic/</guid>
+      <description>2. 初识JavaScript 目标  能够说出JavaScript是什么 能够知道JavaScript的发展历史 能够说出浏览器执行JavaScript的原理 能够说出JavaScript由哪三部分组成 能够写出JavaScript三个输入输出语句  目录  初识JavaScript JavaScript注释 JavaScript输入输出语句  2.1 初识JavaScript 2.1.1 JavaScript历史  布兰登·艾奇（BrendanEich，1961年~） 神奇的大哥在1995年利用10天完成JavaScript涉及 网景公司最初命名位LiveScript，后来在于Sun合作之后将其改名为JavaScript  2.1.2 JavaScript是什么  JavaScript是世界上最流行的语言之一，是一种运行在客户端的脚本语言（Script是脚本的意思） 脚本语言：不需要编译，运行过程中由js解释器（js引擎）逐行来进行解释并执行 现在也可以基于Node.js技术进行服务器端编程  2.1.3 JavaScript的作用  表单动态校验（密码强度检测）（JS产生最初的目的） 网页特效 服务端开发（Node.js） 桌面程序（Election） App（Cordova） 控制硬件-物联网（Ruff） 游戏开发（cocos2d-js）  2.1.4 HTML/CSS/JS的关系 2.1.5 浏览器执行JS简介 浏览器分为两部分 渲染引擎 和 JS引擎
+ 渲染引擎：用来解析HTML与CSS，俗称内核，比如chrome浏览器的blink，老版本的webkit JS引擎：也称为JS解释器。用来读取网页中的JavaScript代码，对其处理后运行，比如chrome浏览器的V8   浏览器本身并不会执行JS代码，而是通过内置JavaScript引擎（解释器）来执行JS代码。JS引擎执行代码时逐行解释每一句源码（转换为机器语言），然后由计算机去执行，所以JavaScript语言归为脚本语言，会逐行解释执行。
+ 2.1.6 JS的组成 2.1.6.1 ECMAScript ECMAScript是由ECMA国际（原欧洲计算机制造商协会）进行标准化的一门编程语言，这种语言在万维网上应用广泛，它往往被称为JavaScript或JScript，但实际上后两者是ECMAScript语言的实现和扩展。
+ECMAScript：ECMAScript规定了JS的编程语言和基础核心知识，是所有浏览器厂商共同遵守的一套JS语言工业标准。
+更多参看MDN：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/JavaScript_technologies_overview
+2.1.6.3 DOM——文档对象模型 文档对象模型（Document ObjectModel，简称DOM），是W3C组织推荐的处理可扩展标记语言的标准编程接口。
+通过DOM提供的接口可以对页面上的各种元素进行操作（大小、位置、颜色等）。</description>
+    </item>
+    
+    <item>
+      <title>笔记-网络工程师</title>
+      <link>https://b40du.github.io/posts/note-aqniu-network-engineer/</link>
+      <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://b40du.github.io/posts/note-aqniu-network-engineer/</guid>
+      <description>目录  第一章：计算机网络基础  计算机网络概述 OSI参考模型与TCP IP（课件有误：SQL、NFS、RPC属于会话层） 局域网基本原理 IP基本原理 TCP与UDP   第二章：网络设备操作入门  网络设备及其操作系统介绍 命令行操作基础 网络设备文件管理 网络设备文件管理-操作实验 网络设备升级操作ComwareV7msr2630 网络设备基本调试   第三章：配置局域网交换  以太网交换机工作原理 vlan配置 vlan配置-实验 生成树协议 生成树协议-实验 端口安全技术 端口安全技术-实验 配置链路聚合 配置链路聚合-实验   第四章：高级TCP/IP知识  子网划分 DNS域名系统 文件传输协议 DHCP IPv6   第五章：配置IP路由  IP路由原理 直连路由和静态路由 直连路由和静态路由-实验 路由协议概述 RIP原理 RIP原理-实验 OSPF基础 OSPF基础-实验   第六章：配置安全的分支网络  用访问控制列表实验包过滤 用访问控制列表实验包过滤-实验 网络地址转换 网络地址转换-实验   第七章：广域网连接和互联  配置HDLC 配置PPP    第一章：计算机网络基础 1.</description>
+    </item>
+    
+    <item>
+      <title>漏洞分析 之 EFS Web Server 7.2 获取HTTP请求SEH缓冲区溢出</title>
+      <link>https://b40du.github.io/posts/report-vul-efs-web-server-7.2/</link>
+      <pubDate>Fri, 11 Oct 2019 16:38:33 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/report-vul-efs-web-server-7.2/</guid>
+      <description>1. 软件简介 Easy File Sharing Web Server（简易文件共享Web服务器）是一种Internet文件共享程序，允许我们在没有任何其他软件或服务的情况下托管安全的个人Web服务器。访问者可以通过Web浏览器（Internet Explorer，Netscape，Opera等）轻松上传/下载文件。
+因此，简单来说，它可以帮助我们与朋友或同事共享文件。这个基于Web的软件可以让我们将文件传送给任何拥有配置有浏览器的PC，而不用繁琐地安装多个软件。也可以让我们的同事或朋友轻松浏览用我的PC搭建的服务器并进行搜索，显示和/或下载经过我授予他们访问权限的文件。
+2. 漏洞复现 2.1 软件下载 Exploit-DB漏洞库地址：https://www.exploit-db.com/exploits/39008
+软件下载地址：https://www.exploit-db.com/apps/60f3ff1f3cd34dec80fba130ea481f31-efssetup.exe
+Python下载地址：https://www.python.org/ftp/python/2.7.16/python-2.7.16.msi
+2.2 环境搭建 安装Easy File Sharing Web Server 7.2
+安装成功后，打开桌面上的EFS软件，点击Try it!
+可以看到，EFS Web Server已经开始运行，此时在我们的本地建立了一个Web服务器，并开启了80端口和443端口。
+然后打开IE浏览器，在地址栏输入http://127.0.0.1/或者http://localhost/或者是EFS软件启动时显示的IP地址类型的http链接http://192.168.25.142
+此时我们可以看到，IE浏览器访问本地网页的时候，是正常显示的。
+如果我们的电脑没有Python环境，我们需要安装好Python环境，目的是为了方便之后我们使用Poc.py进行简易测试。
+然后我们检查一下Poc.py，确认无误。
+2.3 软件测试 接下来我们打开cmd.exe，并使用python执行Poc.py，输入参数，看看会发生什么。
+我们刷新刚才访问的IE浏览器界面，发现网页崩溃了。同时我们发现之前搭建本地Web环境的EFS软件已经退出运行了，看来是由于服务器崩溃导致的网页崩溃，而非本地浏览器的问题。
+此时基本上我们已经把漏洞复现了出来。
+但是我们也观察到了另外一个情况，按理说，xp系统如果程序遇到异常，会弹出一个错误对话框，并能够在其中查找到错误的类型以及内存地址，也就是Windows异常处理机制作用的显示形式。
+而此时此刻我们没有发现错误对话框，程序崩溃时反而直接自动退出了，因此我们需要思考一下，是不是程序的错误导致异常处理机制也产生了错误，这也是我们后面分析的一个重点。
+3. 漏洞分析 3.1 漏洞成因 Easy File Sharing Web Server 7.2 版本中存在缓冲区溢出漏洞。
+远程攻击者可发送GET数据包，由于软件中的fsws.exe在处理GET数据包的路径时，没有对路径内容进行检查，而是直接拼接传参，导致某些关键指针被覆盖，从而导致在软件使用的sqlite3.dll中执行某个函数时，由于引用了无效地址，进而触发SEH异常处理流程或覆盖SHE异常处理函数的指针，导致任意代码执行。
+因此，简单来说，远程攻击者可以发送GET数据包，用数据包中的长字符串利用该漏洞执行任意代码。
+接下来我们来回溯一下，分析该软件的详细过程。
+3.2 分析过程 首先我们附加EFS Web Server这个程序，按g运行，然后用cmd.exe执行我们从漏洞库下载的Poc.py，发现程序中断了，产生了异常。
+可以看到，这里执行了一个cmp的汇编指令，作用是比较后面两个操作数是否相等。比较的是1个四字节指针 [eax+4Ch]和0A29A697h地址上的内容，那么在比较的过程中，发现eax寄存器的值已经变成了41414141。显然这个地址不太像一个可读的地址。
+那不妨查看一下eax的值，在命令窗口输入dd eax。
+然后我们可以看到，在输入dd eax之后，发现内存空间里全部都是问号，eax值是一个不可读的地址。也就是说这个是空间没有被开辟出来导致的内存访问异常。
+接下来我们按g。
+执行过后，我们发现，eip指向41414141，这同样是一个不可读的地址，到这个时候我们已经发现41414141其实是我们之前构造的payload里面大写字母A的ASCII码。所以说，现在是由于程序的某处产生了错误，导致栈被覆盖。
+出现异常时，理论上程序会进入异常处理链进行异常处理，但是由于栈中的SEH链也被覆盖，导致这个链中存放的SEH异常处理函数的指针也被覆盖，因而eip指向的地址是41414141。
+而在异常处理中呢，会调用这个SEH中的异常处理指针，去执行异常处理函数。那么当这个指针被覆盖的时候，调用这个指针指向的地址如果被我们所控制，就能够按照我们的想法，去执行一些代码，这也是后面漏洞利用的一种方式。
+那么我们现在要分析一下，为什么[eax+0Ch]这个地址会被41414141覆盖。这个时候我们需要使用kb命令来查看一下之前堆栈调用的情况。</description>
+    </item>
+    
+  </channel>
+</rss>

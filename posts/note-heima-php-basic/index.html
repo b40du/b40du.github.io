@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html><head>
+<title>笔记-PHP基础</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="黑马-PHP基础-学习笔记-日常更新">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+
+
+
+
+
+
+
+
+<script src="/vendor/js/jquery.min.js" ></script>
+<script src="/vendor/js/popper.min.js" ></script>
+<script src="/vendor/js/bootstrap.min.js" ></script>
+<script src="/vendor/js/smooth-scroll.polyfills.min.js" ></script>
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+<script src="/vendor/js/vue.min.js" ></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://b40du.github.io/scss/journal.min.47aa1ffb60880ad8c72feecd6962a14331eca7a7a30e08354a1ca91009b8bc5b.css" integrity="sha256-R6of&#43;2CICtjHL&#43;7NaWKhQzHsp6ejDgg1ShypEAm4vFs=" media="screen">
+
+
+
+<link rel="stylesheet" href="https://b40du.github.io/scss/dark-mode.min.b13808e7c98cd5aa981a3822fd3421e26f1015876bb15a3fbf8ed5991c382367.css" integrity="sha256-sTgI58mM1aqYGjgi/TQh4m8QFYdrsVo/v47VmRw4I2c=" media="screen">
+
+
+<script src="https://b40du.github.io/js/loadCSS.js"></script>
+<script>
+  loadCSS("https://fonts.googleapis.com/css?family=Lora|Montserrat|Fira+Mono|Noto+Serif+SC|Material+Icons");
+</script>
+
+
+
+
+  
+    <script src="https://b40du.github.io/js/toc-collapse.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+</head><body>
+    	<div id="app"><div ref="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="https://b40du.github.io">
+    
+        <div class="nav-title">
+            爆肚的杂货铺
+        </div>
+        
+        <div class="nav-subtitle">
+            b40du&#39;s blog
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+                
+            
+            
+            
+            <a class="a-block nav-link-item active" href="/posts">
+                归档
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                分类
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                标签
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/about">
+                关于
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/index.xml">
+                RSS订阅
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	This is a customized copyright.
+	
+
+    </div>
+    
+</div><div ref="extraContainer" class="extra-container">
+    
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#%e5%ad%a6%e4%b9%a0%e7%9b%ae%e6%a0%87" onclick="collapseOthers(`#学习目标-nav`)" id="学习目标-nav">
+									学习目标
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#1-php%e7%ae%80%e4%bb%8b" onclick="collapseOthers(`#1-php简介-nav`)" id="1-php简介-nav">
+									1 PHP简介
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#11-%e6%a6%82%e8%bf%b0" onclick="collapseOthers(`#11-概述-nav`)" id="11-概述-nav">
+									1.1 概述
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#12-%e4%ba%94%e4%b8%aa%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5" onclick="collapseOthers(`#12-五个基本概念-nav`)" id="12-五个基本概念-nav">
+									1.2 五个基本概念
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#13-php%e7%9a%84%e4%bc%98%e7%82%b9" onclick="collapseOthers(`#13-php的优点-nav`)" id="13-php的优点-nav">
+									1.3 PHP的优点
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#2-web-%e4%bb%8b%e7%bb%8d" onclick="collapseOthers(`#2-web-介绍-nav`)" id="2-web-介绍-nav">
+									2 Web 介绍
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#21-web-%e6%97%b6%e4%bb%a3%e7%9a%84%e5%8f%98%e8%bf%81" onclick="collapseOthers(`#21-web-时代的变迁-nav`)" id="21-web-时代的变迁-nav">
+									2.1 Web 时代的变迁
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#22-web%e6%9c%8d%e5%8a%a1%e5%8e%9f%e7%90%86" onclick="collapseOthers(`#22-web服务原理-nav`)" id="22-web服务原理-nav">
+									2.2 Web服务原理
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#23-%e6%90%ad%e5%bb%ba-web-%e6%9c%8d%e5%8a%a1%e5%99%a8" onclick="collapseOthers(`#23-搭建-web-服务器-nav`)" id="23-搭建-web-服务器-nav">
+									2.3 搭建 Web 服务器
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#231-%e5%ae%89%e8%a3%85-phpstudy" onclick="collapseOthers(`#231-安装-phpstudy-nav`)" id="231-安装-phpstudy-nav">
+									2.3.1 安装 phpstudy
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#232-%e8%ae%bf%e9%97%ae%e6%9c%8d%e5%8a%a1%e5%99%a8" onclick="collapseOthers(`#232-访问服务器-nav`)" id="232-访问服务器-nav">
+									2.3.2 访问服务器
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#233-%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4" onclick="collapseOthers(`#233-常用命令-nav`)" id="233-常用命令-nav">
+									2.3.3 常用命令
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#234-%e4%ba%92%e8%81%94%e7%bd%91%e9%80%9a%e8%ae%af%e5%8e%9f%e7%90%86" onclick="collapseOthers(`#234-互联网通讯原理-nav`)" id="234-互联网通讯原理-nav">
+									2.3.4 互联网通讯原理
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#235-dns-%e8%a7%a3%e6%9e%90" onclick="collapseOthers(`#235-dns-解析-nav`)" id="235-dns-解析-nav">
+									2.3.5 DNS 解析
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#24-%e6%9c%8d%e5%8a%a1%e5%99%a8%e9%85%8d%e7%bd%ae" onclick="collapseOthers(`#24-服务器配置-nav`)" id="24-服务器配置-nav">
+									2.4 服务器配置
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#241-%e8%99%9a%e6%8b%9f%e7%9b%ae%e5%bd%95%e9%85%8d%e7%bd%ae" onclick="collapseOthers(`#241-虚拟目录配置-nav`)" id="241-虚拟目录配置-nav">
+									2.4.1 虚拟目录配置
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#2411-%e6%9d%83%e9%99%90%e7%bb%83%e4%b9%a0" onclick="collapseOthers(`#2411-权限练习-nav`)" id="2411-权限练习-nav">
+									2.4.1.1 权限练习
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2412-%e6%9b%b4%e6%94%b9%e9%bb%98%e8%ae%a4%e9%a6%96%e9%a1%b5" onclick="collapseOthers(`#2412-更改默认首页-nav`)" id="2412-更改默认首页-nav">
+									2.4.1.2 更改默认首页
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2413-%e6%9b%b4%e6%94%b9%e7%9b%91%e5%90%ac%e7%ab%af%e5%8f%a3" onclick="collapseOthers(`#2413-更改监听端口-nav`)" id="2413-更改监听端口-nav">
+									2.4.1.3 更改监听端口
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2414-%e6%9f%a5%e7%9c%8b%e7%ab%af%e5%8f%a3%e7%9a%84%e5%8d%a0%e7%94%a8%e6%83%85%e5%86%b5" onclick="collapseOthers(`#2414-查看端口的占用情况-nav`)" id="2414-查看端口的占用情况-nav">
+									2.4.1.4 查看端口的占用情况
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#242-%e8%99%9a%e6%8b%9f%e4%b8%bb%e6%9c%ba%e9%85%8d%e7%bd%ae" onclick="collapseOthers(`#242-虚拟主机配置-nav`)" id="242-虚拟主机配置-nav">
+									2.4.2 虚拟主机配置
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#243-%e7%ab%99%e7%82%b9%e8%99%9a%e6%8b%9f%e7%9b%ae%e5%bd%95%e8%99%9a%e6%8b%9f%e4%b8%bb%e6%9c%ba%e7%9a%84%e5%8c%ba%e5%88%ab" onclick="collapseOthers(`#243-站点虚拟目录虚拟主机的区别-nav`)" id="243-站点虚拟目录虚拟主机的区别-nav">
+									2.4.3 站点、虚拟目录、虚拟主机的区别
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#3-php%e8%af%ad%e6%b3%95%e5%85%a5%e9%97%a8" onclick="collapseOthers(`#3-php语法入门-nav`)" id="3-php语法入门-nav">
+									3 PHP语法入门
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#31-php%e6%98%af%e7%bc%96%e8%af%91%e5%9e%8b%e8%af%ad%e8%a8%80" onclick="collapseOthers(`#31-php是编译型语言-nav`)" id="31-php是编译型语言-nav">
+									3.1 PHP是编译型语言
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-php-%e5%ae%9a%e7%95%8c%e7%ac%a6" onclick="collapseOthers(`#32-php-定界符-nav`)" id="32-php-定界符-nav">
+									3.2 PHP 定界符
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-%e6%b3%a8%e9%87%8a" onclick="collapseOthers(`#33-注释-nav`)" id="33-注释-nav">
+									3.3 注释
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#34-php-%e8%be%93%e5%87%ba%e8%af%ad%e5%8f%a5" onclick="collapseOthers(`#34-php-输出语句-nav`)" id="34-php-输出语句-nav">
+									3.4 PHP 输出语句
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#4-%e5%8f%98%e9%87%8f" onclick="collapseOthers(`#4-变量-nav`)" id="4-变量-nav">
+									4 变量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#41-%e5%8f%98%e9%87%8f%e7%9a%84%e5%91%bd%e5%90%8d%e8%a7%84%e5%88%99" onclick="collapseOthers(`#41-变量的命名规则-nav`)" id="41-变量的命名规则-nav">
+									4.1 变量的命名规则
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#42-%e5%8f%af%e5%8f%98%e5%8f%98%e9%87%8f" onclick="collapseOthers(`#42-可变变量-nav`)" id="42-可变变量-nav">
+									4.2 可变变量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#43-%e5%8f%98%e9%87%8f%e4%bc%a0%e9%80%92" onclick="collapseOthers(`#43-变量传递-nav`)" id="43-变量传递-nav">
+									4.3 变量传递
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#44-%e9%94%80%e6%af%81%e5%8f%98%e9%87%8f" onclick="collapseOthers(`#44-销毁变量-nav`)" id="44-销毁变量-nav">
+									4.4 销毁变量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#5-%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#5-常量-nav`)" id="5-常量-nav">
+									5 常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#51-%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#51-定义常量-nav`)" id="51-定义常量-nav">
+									5.1 定义常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#52-%e9%a2%84%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#52-预定义常量-nav`)" id="52-预定义常量-nav">
+									5.2 预定义常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#53-%e9%ad%94%e6%9c%af%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#53-魔术常量-nav`)" id="53-魔术常量-nav">
+									5.3 魔术常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#6-%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#6-数据类型-nav`)" id="6-数据类型-nav">
+									6. 数据类型
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#61-%e5%9f%ba%e6%9c%ac%e7%b1%bb%e5%9e%8b%e6%a0%87%e9%87%8f%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#61-基本类型标量类型-nav`)" id="61-基本类型标量类型-nav">
+									6.1 基本类型（标量类型）
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#62-%e5%a4%8d%e5%90%88%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#62-复合类型-nav`)" id="62-复合类型-nav">
+									6.2 复合类型
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#63-%e7%89%b9%e6%ae%8a%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#63-特殊类型-nav`)" id="63-特殊类型-nav">
+									6.3 特殊类型
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#64-%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2" onclick="collapseOthers(`#64-类型转换-nav`)" id="64-类型转换-nav">
+									6.4 类型转换
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#7-%e8%bf%90%e7%ae%97%e7%ac%a6" onclick="collapseOthers(`#7-运算符-nav`)" id="7-运算符-nav">
+									7. 运算符
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#8-%e5%88%a4%e6%96%ad" onclick="collapseOthers(`#8-判断-nav`)" id="8-判断-nav">
+									8. 判断
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#9-%e5%be%aa%e7%8e%af" onclick="collapseOthers(`#9-循环-nav`)" id="9-循环-nav">
+									9. 循环
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a class="pagination-action" v-on:click="toggleDarkMode">
+            <i class="material-icons pagination-action-icon" v-if="isDarkMode">
+                brightness_4
+            </i>
+            <i class="material-icons pagination-action-icon" v-else="isDarkMode">
+                brightness_7
+            </i>
+        </a>
+        
+        
+    </div>
+</div><div class="single-column-drawer-container" ref="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                    
+                
+                
+                
+                <a class="a-block drawer-menu-item active" href="/posts">
+                    归档
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    分类
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    标签
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/about">
+                    关于
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/index.xml">
+                    RSS订阅
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#%e5%ad%a6%e4%b9%a0%e7%9b%ae%e6%a0%87" onclick="collapseOthers(`#学习目标-nav`)" id="学习目标-nav">
+									学习目标
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#1-php%e7%ae%80%e4%bb%8b" onclick="collapseOthers(`#1-php简介-nav`)" id="1-php简介-nav">
+									1 PHP简介
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#11-%e6%a6%82%e8%bf%b0" onclick="collapseOthers(`#11-概述-nav`)" id="11-概述-nav">
+									1.1 概述
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#12-%e4%ba%94%e4%b8%aa%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5" onclick="collapseOthers(`#12-五个基本概念-nav`)" id="12-五个基本概念-nav">
+									1.2 五个基本概念
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#13-php%e7%9a%84%e4%bc%98%e7%82%b9" onclick="collapseOthers(`#13-php的优点-nav`)" id="13-php的优点-nav">
+									1.3 PHP的优点
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#2-web-%e4%bb%8b%e7%bb%8d" onclick="collapseOthers(`#2-web-介绍-nav`)" id="2-web-介绍-nav">
+									2 Web 介绍
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#21-web-%e6%97%b6%e4%bb%a3%e7%9a%84%e5%8f%98%e8%bf%81" onclick="collapseOthers(`#21-web-时代的变迁-nav`)" id="21-web-时代的变迁-nav">
+									2.1 Web 时代的变迁
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#22-web%e6%9c%8d%e5%8a%a1%e5%8e%9f%e7%90%86" onclick="collapseOthers(`#22-web服务原理-nav`)" id="22-web服务原理-nav">
+									2.2 Web服务原理
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#23-%e6%90%ad%e5%bb%ba-web-%e6%9c%8d%e5%8a%a1%e5%99%a8" onclick="collapseOthers(`#23-搭建-web-服务器-nav`)" id="23-搭建-web-服务器-nav">
+									2.3 搭建 Web 服务器
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#231-%e5%ae%89%e8%a3%85-phpstudy" onclick="collapseOthers(`#231-安装-phpstudy-nav`)" id="231-安装-phpstudy-nav">
+									2.3.1 安装 phpstudy
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#232-%e8%ae%bf%e9%97%ae%e6%9c%8d%e5%8a%a1%e5%99%a8" onclick="collapseOthers(`#232-访问服务器-nav`)" id="232-访问服务器-nav">
+									2.3.2 访问服务器
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#233-%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4" onclick="collapseOthers(`#233-常用命令-nav`)" id="233-常用命令-nav">
+									2.3.3 常用命令
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#234-%e4%ba%92%e8%81%94%e7%bd%91%e9%80%9a%e8%ae%af%e5%8e%9f%e7%90%86" onclick="collapseOthers(`#234-互联网通讯原理-nav`)" id="234-互联网通讯原理-nav">
+									2.3.4 互联网通讯原理
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#235-dns-%e8%a7%a3%e6%9e%90" onclick="collapseOthers(`#235-dns-解析-nav`)" id="235-dns-解析-nav">
+									2.3.5 DNS 解析
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#24-%e6%9c%8d%e5%8a%a1%e5%99%a8%e9%85%8d%e7%bd%ae" onclick="collapseOthers(`#24-服务器配置-nav`)" id="24-服务器配置-nav">
+									2.4 服务器配置
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#241-%e8%99%9a%e6%8b%9f%e7%9b%ae%e5%bd%95%e9%85%8d%e7%bd%ae" onclick="collapseOthers(`#241-虚拟目录配置-nav`)" id="241-虚拟目录配置-nav">
+									2.4.1 虚拟目录配置
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#2411-%e6%9d%83%e9%99%90%e7%bb%83%e4%b9%a0" onclick="collapseOthers(`#2411-权限练习-nav`)" id="2411-权限练习-nav">
+									2.4.1.1 权限练习
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2412-%e6%9b%b4%e6%94%b9%e9%bb%98%e8%ae%a4%e9%a6%96%e9%a1%b5" onclick="collapseOthers(`#2412-更改默认首页-nav`)" id="2412-更改默认首页-nav">
+									2.4.1.2 更改默认首页
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2413-%e6%9b%b4%e6%94%b9%e7%9b%91%e5%90%ac%e7%ab%af%e5%8f%a3" onclick="collapseOthers(`#2413-更改监听端口-nav`)" id="2413-更改监听端口-nav">
+									2.4.1.3 更改监听端口
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2414-%e6%9f%a5%e7%9c%8b%e7%ab%af%e5%8f%a3%e7%9a%84%e5%8d%a0%e7%94%a8%e6%83%85%e5%86%b5" onclick="collapseOthers(`#2414-查看端口的占用情况-nav`)" id="2414-查看端口的占用情况-nav">
+									2.4.1.4 查看端口的占用情况
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#242-%e8%99%9a%e6%8b%9f%e4%b8%bb%e6%9c%ba%e9%85%8d%e7%bd%ae" onclick="collapseOthers(`#242-虚拟主机配置-nav`)" id="242-虚拟主机配置-nav">
+									2.4.2 虚拟主机配置
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#243-%e7%ab%99%e7%82%b9%e8%99%9a%e6%8b%9f%e7%9b%ae%e5%bd%95%e8%99%9a%e6%8b%9f%e4%b8%bb%e6%9c%ba%e7%9a%84%e5%8c%ba%e5%88%ab" onclick="collapseOthers(`#243-站点虚拟目录虚拟主机的区别-nav`)" id="243-站点虚拟目录虚拟主机的区别-nav">
+									2.4.3 站点、虚拟目录、虚拟主机的区别
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#3-php%e8%af%ad%e6%b3%95%e5%85%a5%e9%97%a8" onclick="collapseOthers(`#3-php语法入门-nav`)" id="3-php语法入门-nav">
+									3 PHP语法入门
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#31-php%e6%98%af%e7%bc%96%e8%af%91%e5%9e%8b%e8%af%ad%e8%a8%80" onclick="collapseOthers(`#31-php是编译型语言-nav`)" id="31-php是编译型语言-nav">
+									3.1 PHP是编译型语言
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-php-%e5%ae%9a%e7%95%8c%e7%ac%a6" onclick="collapseOthers(`#32-php-定界符-nav`)" id="32-php-定界符-nav">
+									3.2 PHP 定界符
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-%e6%b3%a8%e9%87%8a" onclick="collapseOthers(`#33-注释-nav`)" id="33-注释-nav">
+									3.3 注释
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#34-php-%e8%be%93%e5%87%ba%e8%af%ad%e5%8f%a5" onclick="collapseOthers(`#34-php-输出语句-nav`)" id="34-php-输出语句-nav">
+									3.4 PHP 输出语句
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#4-%e5%8f%98%e9%87%8f" onclick="collapseOthers(`#4-变量-nav`)" id="4-变量-nav">
+									4 变量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#41-%e5%8f%98%e9%87%8f%e7%9a%84%e5%91%bd%e5%90%8d%e8%a7%84%e5%88%99" onclick="collapseOthers(`#41-变量的命名规则-nav`)" id="41-变量的命名规则-nav">
+									4.1 变量的命名规则
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#42-%e5%8f%af%e5%8f%98%e5%8f%98%e9%87%8f" onclick="collapseOthers(`#42-可变变量-nav`)" id="42-可变变量-nav">
+									4.2 可变变量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#43-%e5%8f%98%e9%87%8f%e4%bc%a0%e9%80%92" onclick="collapseOthers(`#43-变量传递-nav`)" id="43-变量传递-nav">
+									4.3 变量传递
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#44-%e9%94%80%e6%af%81%e5%8f%98%e9%87%8f" onclick="collapseOthers(`#44-销毁变量-nav`)" id="44-销毁变量-nav">
+									4.4 销毁变量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#5-%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#5-常量-nav`)" id="5-常量-nav">
+									5 常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#51-%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#51-定义常量-nav`)" id="51-定义常量-nav">
+									5.1 定义常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#52-%e9%a2%84%e5%ae%9a%e4%b9%89%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#52-预定义常量-nav`)" id="52-预定义常量-nav">
+									5.2 预定义常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#53-%e9%ad%94%e6%9c%af%e5%b8%b8%e9%87%8f" onclick="collapseOthers(`#53-魔术常量-nav`)" id="53-魔术常量-nav">
+									5.3 魔术常量
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#6-%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#6-数据类型-nav`)" id="6-数据类型-nav">
+									6. 数据类型
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#61-%e5%9f%ba%e6%9c%ac%e7%b1%bb%e5%9e%8b%e6%a0%87%e9%87%8f%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#61-基本类型标量类型-nav`)" id="61-基本类型标量类型-nav">
+									6.1 基本类型（标量类型）
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#62-%e5%a4%8d%e5%90%88%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#62-复合类型-nav`)" id="62-复合类型-nav">
+									6.2 复合类型
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#63-%e7%89%b9%e6%ae%8a%e7%b1%bb%e5%9e%8b" onclick="collapseOthers(`#63-特殊类型-nav`)" id="63-特殊类型-nav">
+									6.3 特殊类型
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#64-%e7%b1%bb%e5%9e%8b%e8%bd%ac%e6%8d%a2" onclick="collapseOthers(`#64-类型转换-nav`)" id="64-类型转换-nav">
+									6.4 类型转换
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#7-%e8%bf%90%e7%ae%97%e7%ac%a6" onclick="collapseOthers(`#7-运算符-nav`)" id="7-运算符-nav">
+									7. 运算符
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#8-%e5%88%a4%e6%96%ad" onclick="collapseOthers(`#8-判断-nav`)" id="8-判断-nav">
+									8. 判断
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#9-%e5%be%aa%e7%8e%af" onclick="collapseOthers(`#9-循环-nav`)" id="9-循环-nav">
+									9. 循环
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div ref="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a ref="navTitle" class="navbar-brand" href="https://b40du.github.io">
+            爆肚的杂货铺
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" v-on:click="toggleDarkMode">
+            <i class="material-icons" v-if="isDarkMode">
+                brightness_4
+            </i>
+            <i class="material-icons" v-else="isDarkMode">
+                brightness_7
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" ref="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="https://b40du.github.io">
+        <div class="single-column-header-title">爆肚的杂货铺</div>
+        
+        <div class="single-column-header-subtitle">b40du&#39;s blog</div>
+        
+
+    </a>
+</div>
+            <div id="content">
+<div ref="streamContainer" class="stream-container">
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    笔记-PHP基础
+                    
+                    <div class="post-subtitle">
+                        黑马-PHP基础-学习笔记-日常更新
+                    </div>
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2020-05-11 23:00
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0">学习笔记</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/php">php</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <h2 id="学习目标">学习目标</h2>
+<ol>
+<li>掌握互联网的工作原理</li>
+<li>掌握域名、DNS和IP地址之间的关系</li>
+<li>理解hosts文件在互联网访问过程中的作用</li>
+<li>理解静态网站和动态网站的区别</li>
+<li>理解动态网站的服务器组成</li>
+<li>了解PHP的工作过程</li>
+<li>掌握PHP变量的使用方式</li>
+<li>理解可变变量的概念</li>
+<li>掌握可变变量的访问形式</li>
+<li>理解变量的值传递和引用传递的区别</li>
+</ol>
+<h1 id="1-php简介">1 PHP简介</h1>
+<h2 id="11-概述">1.1 概述</h2>
+<ul>
+<li>PHP是HyperText Preprocessor的缩写，（超文本预处理器）是一种在服务器端运行的开源的脚本语言</li>
+<li>LAMP组合（Linux，Apache，MySQL，PHP），这四个产品都是公开源代码的产品</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511140657.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">php 是一门语言，用来做业务逻辑
+apache 为PHP提供了运行环境
+linux 为Apache的运行提供了平台
+mysql 数据库用来存储数据
+</code></pre></div><p>wamp</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">windows+apache+ mysql +php
+</code></pre></div><h2 id="12-五个基本概念">1.2 五个基本概念</h2>
+<ul>
+<li>静态网站和动态网站</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">静态页面：服务器不执行的页面
+动态页面：服务器执行的页面
+</code></pre></div><blockquote>
+<p>动态网站中可以存放静态页面</p>
+</blockquote>
+<ul>
+<li>客户端和服务器端</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">客户端：浏览者
+服务器端：给浏览者提供服务
+</code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511152635.png" alt=""></p>
+<ul>
+<li>端口和端口号</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">端口号的范围：0~65535
+</code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511152718.png" alt=""></p>
+<ul>
+<li>BS架构和CS架构</li>
+</ul>
+<p>BS：通过浏览器去访问服务器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">b:browser（浏览器）
+s:server（服务器）
+优点：
+1. 只要有浏览器就可以访问
+2. 开发成本低
+缺点：
+1. 开发的代码都放在服务器上 胖服务器-瘦客户端
+</code></pre></div><blockquote>
+<p>所有的web都是BS架构的</p>
+</blockquote>
+<p>CS：通过客户端软件去访问服务器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">c:client（客户端）
+s:server（服务器）
+优点：
+1. 可以开发客户端和服务器端，这时候就可以实现负载的均衡
+缺点：
+1. 必须要安装一个软件才能去访问
+2. 开发成本高
+</code></pre></div><blockquote>
+<p>例如：QQ</p>
+</blockquote>
+<ul>
+<li>前台和后台</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">前台：浏览器看到的界面
+后台：管理员看到的界面
+</code></pre></div><h2 id="13-php的优点">1.3 PHP的优点</h2>
+<ol>
+<li>跨平台：既能在Windows上运行，也能在Linux上运行</li>
+<li>源码开放：不会涉及到版权问题</li>
+<li>语法简单：php 入门简单</li>
+<li>运行在服务器端：只需要在服务器部署环境就可以了</li>
+</ol>
+<h1 id="2-web-介绍">2 Web 介绍</h1>
+<h2 id="21-web-时代的变迁">2.1 Web 时代的变迁</h2>
+<p>从互联玩刚开始崛起到现在，经历了从 Web1.0 到 Web3.0 的过程。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">Web1.0（信息共享）的主要特点在于用户单纯的获取信息
+Web2.0（信息共建）更注重用户的交互作用，用户即是网站内容的浏览者，也是网站内容的制造者
+Web3.0（信息传承）通过第三方信息平台对多家网站的信息进行整合，用户在互联网上拥有自己的数据，并能在不同网站上使用
+</code></pre></div><p>举例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">Web1.0：来到一个餐馆，老板给你上了一盘番茄炒蛋
+Web2.0：来到一个餐馆，你跟老板主动点了一份番茄炒蛋
+Web3.0：来到一个餐馆，老板见到你就问，老规矩，还要番茄炒蛋？
+</code></pre></div><h2 id="22-web服务原理">2.2 Web服务原理</h2>
+<ul>
+<li>静态网站原理（浏览器-服务器）</li>
+<li>动态网站原理（浏览器-服务器-数据库）</li>
+<li>智能网站原理（浏览器-服务器【分析推荐】-数据库）</li>
+</ul>
+<h2 id="23-搭建-web-服务器">2.3 搭建 Web 服务器</h2>
+<h3 id="231-安装-phpstudy">2.3.1 安装 phpstudy</h3>
+<p>PHPStudy介绍、安装、目录说明、访问测试</p>
+<ul>
+<li>直接解压即可</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511141712.png" alt=""></p>
+<ul>
+<li>目录结构</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511141759.png" alt=""></p>
+<ul>
+<li>启动服务</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511141945.png" alt=""></p>
+<h3 id="232-访问服务器">2.3.2 访问服务器</h3>
+<p>在www目录下创建demo.php页面</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+    <span style="color:#a6e22e">phpinfo</span>();
+</code></pre></div><p>访问服务器</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">访问规则：http://服务器ip地址/php页面
+比如：
+http://localhost/demo.php
+http://127.0.0.1/demo.php
+</code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511142114.png" alt=""></p>
+<h3 id="233-常用命令">2.3.3 常用命令</h3>
+<ul>
+<li>补充DOS命令</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">切换盘符	盘符:
+进入目录	cd 目录地址
+</code></pre></div><ul>
+<li>Apache命令</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">httpd -v 查看版本号
+httpd -t 检测运行环境
+</code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511142419.png" alt=""></p>
+<ul>
+<li>PHP命令</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">php -v php版本号
+</code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511142545.png" alt=""></p>
+<h3 id="234-互联网通讯原理">2.3.4 互联网通讯原理</h3>
+<p>本质一台电脑访问另外一台电脑资源、寻址过程（IP地址、端口、域名、DNS）</p>
+<p>在互联网上，IP地址是用来区分每台计算机的标识，但是IP记忆不友好，我们给IP地址取一个名字，一个IP对应一个名字，这个名字就称为域名。</p>
+<p>访问过程：</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511142756.png" alt=""></p>
+<p>步骤：</p>
+<ol>
+<li>客户端输入域名（网址），在最近的机房做DNS解析（Domian Name Server），DNS解析就是将域名转化为IP地址</li>
+<li>通过IP地址访问服务器</li>
+</ol>
+<h3 id="235-dns-解析">2.3.5 DNS 解析</h3>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511142922.png" alt=""></p>
+<ul>
+<li>hosts文件</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511142959.png" alt=""></p>
+<ul>
+<li>测试</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511143022.png" alt=""></p>
+<blockquote>
+<p>hosts文件用来做DNS解析</p>
+</blockquote>
+<h2 id="24-服务器配置">2.4 服务器配置</h2>
+<h3 id="241-虚拟目录配置">2.4.1 虚拟目录配置</h3>
+<ul>
+<li>更改虚拟目录</li>
+</ul>
+<p>要更改虚拟目录的位置，需要到apache的配置文件中更改（conf/httpd.conf）</p>
+<p>在phpstudy中，http引入了vhost.conf文件</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511143438.png" alt=""></p>
+<p>所以，我们到vhost.conf文件中去更改虚拟目录</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511143238.png" alt=""></p>
+<p>更改虚拟目录</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511145133.png" alt=""></p>
+<blockquote>
+<p>提醒：项目上线以后，不可以显示目录结构</p>
+</blockquote>
+<h4 id="2411-权限练习">2.4.1.1 权限练习</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">Order allow, deny
+Allow from all
+# 允许所有请求访问
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">Order allow, deny
+Allow from all
+Deny from all
+# 拒绝所有请求访问
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">Order allow, deny
+Deny from all
+Allow from all
+# 拒绝所有请求访问
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">Directory</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">c:</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">PHP</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">Apache</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">htdocs</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;
+	Order deny, allow
+    Allow from 192.168.101.50
+    Deny from 192.168
+&lt;/<span style="color:#f92672">Directory</span>&gt;
+# 拒绝192.168开头，但除去（192.168.101.50）的IP的访问
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">Directory</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">c:</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">PHP</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">Apache</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">htdocs</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;
+	Order deny, allow
+    Allow from 192.168.101.50
+    Deny from allow
+&lt;/<span style="color:#f92672">Directory</span>&gt;
+# 只允许192.168.101.50访问
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">Directory</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">c:</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">PHP</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">Apache</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">htdocs</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;
+	Order allow, deny
+    Allow from 192.168
+    Deny from 192.168.101.50
+&lt;/<span style="color:#f92672">Directory</span>&gt;
+# 只允许192.168开头的，但要去除192.168.101.50的IP的访问
+</code></pre></div><h4 id="2412-更改默认首页">2.4.1.2 更改默认首页</h4>
+<p>在httpd.conf配置文件中</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511152108.png" alt=""></p>
+<p>默认首页的查找顺序，从前往后。</p>
+<h4 id="2413-更改监听端口">2.4.1.3 更改监听端口</h4>
+<p>在httpd.conf配置文件中设置</p>
+<p>通过listen指令设置监听的端口</p>
+<p>可以设置多个监听端口</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511153115.png" alt=""></p>
+<p>访问：</p>
+<p>http://域名:端口号/demo.php</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511153144.png" alt=""></p>
+<h4 id="2414-查看端口的占用情况">2.4.1.4 查看端口的占用情况</h4>
+<p>在命令行下使用netstat -ano查看</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511153243.png" alt=""></p>
+<p>在结果中查找字符串</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511153310.png" alt=""></p>
+<h3 id="242-虚拟主机配置">2.4.2 虚拟主机配置</h3>
+<p>需求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">输入 www.baidu.com 打开web1的页面
+输入 www.sina.com 打开web2的页面
+</code></pre></div><p>要配置虚拟主机，需要在httpd.conf中引入虚拟主机的配置文件（vhost.conf）</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511154407.png" alt=""></p>
+<p>vhosts.conf配置如下</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">&lt;<span style="color:#f92672">VirtualHost</span> <span style="color:#a6e22e">_default_:80</span>&gt;
+  DocumentRoot &#34;C:\web1&#34;       #指定虚拟目录路径
+  ServerName www.baidu.com     # 虚拟目录绑定的域名
+  DirectoryIndex aa.php        # 默认首页
+  &lt;<span style="color:#f92672">Directory</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">C:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">web1</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;
+    Options -Indexes -FollowSymLinks +ExecCGI
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    Require all granted
+  &lt;/<span style="color:#f92672">Directory</span>&gt;
+&lt;/<span style="color:#f92672">VirtualHost</span>&gt;
+
+
+&lt;<span style="color:#f92672">VirtualHost</span> <span style="color:#a6e22e">_default_:80</span>&gt;
+DocumentRoot &#34;C:\web2&#34;
+ ServerName www.sina.com
+ DirectoryIndex bb.php
+  &lt;<span style="color:#f92672">Directory</span> <span style="color:#960050;background-color:#1e0010">&#34;</span><span style="color:#a6e22e">C:</span><span style="color:#960050;background-color:#1e0010">\</span><span style="color:#a6e22e">web2</span><span style="color:#960050;background-color:#1e0010">&#34;</span>&gt;
+    Options -Indexes -FollowSymLinks +ExecCGI
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    Require all granted
+  &lt;/<span style="color:#f92672">Directory</span>&gt;
+&lt;/<span style="color:#f92672">VirtualHost</span>&gt;
+</code></pre></div><p>在hosts文件中做dns解析</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511154955.png" alt=""></p>
+<p>访问结果</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511155032.png" alt=""></p>
+<h3 id="243-站点虚拟目录虚拟主机的区别">2.4.3 站点、虚拟目录、虚拟主机的区别</h3>
+<ul>
+<li>站点：站点就是一个文件夹，用来保存于网站有关的所有素材</li>
+<li>虚拟目录：站点+权限</li>
+<li>虚拟主机：虚拟目录+域名</li>
+</ul>
+<h1 id="3-php语法入门">3 PHP语法入门</h1>
+<h2 id="31-php是编译型语言">3.1 PHP是编译型语言</h2>
+<ul>
+<li>编译语言和解释语言的区别在于是否保存最终的可执行程序。</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511183132.png" alt=""></p>
+<ul>
+<li>PHP执行过程</li>
+</ul>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511183330.png" alt=""></p>
+<h2 id="32-php-定界符">3.2 PHP 定界符</h2>
+<p>因为PHP是脚本语言，所以需要定界符。</p>
+<ol>
+<li>标准风格</li>
+</ol>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?PHP</span>
+	<span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;i am a boy&#39;</span>;
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><blockquote>
+<p>注意：如果整个页面都是PHP代码，PHP结束符是可以省略的</p>
+</blockquote>
+<ol start="2">
+<li>短标记风格（默认情况下不支持，需要在php配置文件中开启支持短标记）</li>
+</ol>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511185133.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?</span>
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;锄禾日当午&#39;</span>;
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><blockquote>
+<p>httpd.conf 是 apache 的配置文件</p>
+<p>php.ini 是 php 的配置文件</p>
+</blockquote>
+<h2 id="33-注释">3.3 注释</h2>
+<ul>
+<li>单行注释：<code>//</code></li>
+<li>多行注释：<code>/* */</code></li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+  	<span style="color:#75715e">// 这是单行注释
+</span><span style="color:#75715e"></span>    <span style="color:#75715e"># 这也是单行注释   
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">/*
+</span><span style="color:#75715e">    	这是多行注释
+</span><span style="color:#75715e">    */</span>
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><h2 id="34-php-输出语句">3.4 PHP 输出语句</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">echo: 输出
+print: 输出，输出成功返回1
+print_r(): 输出数组
+var_dump(): 输出数据，并且带有数据类型和数据长度
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?PHP</span>
+    <span style="color:#66d9ef">echo</span> <span style="color:#e6db74">&#39;锄禾日当午&lt;br&gt;&#39;</span>;
+	<span style="color:#66d9ef">print</span> (<span style="color:#e6db74">&#39;汗滴禾下土&lt;br&gt;&#39;</span>);
+	<span style="color:#a6e22e">var_dump</span>(<span style="color:#e6db74">&#39;abc&#39;</span>);	<span style="color:#75715e">// string(3) &#34;abc&#34;
+</span><span style="color:#75715e"></span><span style="color:#75715e">?&gt;</span>
+</code></pre></div><h1 id="4-变量">4 变量</h1>
+<p>变量的本质就是内存中的一段空间。</p>
+<h2 id="41-变量的命名规则">4.1 变量的命名规则</h2>
+<ol>
+<li>变量必须以<code>$</code>开头，<code>$</code>符不是变量的一部分，仅表示后面的标识符是变量名。</li>
+<li>除了<code>$</code>意以外，以字母、下划线开头，后面跟着数字、字母、下划线</li>
+<li>语句以分号结尾</li>
+<li>变量名区分大小写，<code>$aa</code>和<code>$Aa</code>是两个空间</li>
+</ol>
+<p>下列变量是否合法</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php">$a		合法
+$a1		合法
+$1a		不合法
+$_1a	合法
+</code></pre></div><p>注意：PHP语句必须以分号结尾</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+	$a <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+	$name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;Tom&#39;</span>;
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><h2 id="42-可变变量">4.2 可变变量</h2>
+<p>变量名可以变，将变量名存储在另外一个变量中</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+    $name1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;tom&#39;</span>;
+	$name2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;berry&#39;</span>;
+	$name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;name2&#39;</span>;
+	<span style="color:#66d9ef">echo</span> $$name;		<span style="color:#75715e">// $name = &#39;name1&#39;时，结果为tom
+</span><span style="color:#75715e"></span>						<span style="color:#75715e">// $name = &#39;name2&#39;时，结果为berry
+</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+    $name1 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;tom&#39;</span>;
+	$name2 <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;berry&#39;</span>;
+	<span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">rand</span>(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">10</span>) <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span>) {	<span style="color:#75715e">// 1 奇数 0 偶数
+</span><span style="color:#75715e"></span>        $name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;name1&#39;</span>;	<span style="color:#75715e">// 将变量名存储在$name中
+</span><span style="color:#75715e"></span>    } <span style="color:#66d9ef">else</span> {
+        $name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;name2&#39;</span>;
+    }
+	<span style="color:#66d9ef">echo</span> $$name;		<span style="color:#75715e">// tom
+</span></code></pre></div><blockquote>
+<p>小结：</p>
+<p>rand(1, 10)：获取 1~10 的随机整数</p>
+</blockquote>
+<h2 id="43-变量传递">4.3 变量传递</h2>
+<p>变量的传递有值传递和地址传递（引用传递）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+    <span style="color:#75715e">// 值传递
+</span><span style="color:#75715e"></span>    $num1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;		<span style="color:#75715e">// 将10赋给$num1
+</span><span style="color:#75715e"></span>	$num2 <span style="color:#f92672">=</span> $num1;	<span style="color:#75715e">// 将$num1的值赋给$num2
+</span><span style="color:#75715e"></span>	$num2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>;		<span style="color:#75715e">// 更改$num2
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">echo</span> $num1;		<span style="color:#75715e">// 10
+</span></code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511201555.png" alt=""></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+	<span style="color:#75715e">// 地址传递
+</span><span style="color:#75715e"></span>	$num1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;		<span style="color:#75715e">// 将10赋给$num1
+</span><span style="color:#75715e"></span>	$num2 <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>$num1;	<span style="color:#75715e">// 将$num1的地址赋给$num2
+</span><span style="color:#75715e"></span>	$num2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>;		<span style="color:#75715e">// 更改$num2
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">echo</span> $num1;		<span style="color:#75715e">// 20
+</span></code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200511201631.png" alt=""></p>
+<p>小结：</p>
+<ol>
+<li>参数的传递有两种，值传递和地址传递</li>
+<li>&amp;表示获取变量的地址</li>
+<li>值传递中，一个变量变了，另一个变量没有影响，因为是两个空间</li>
+<li>地址传递中，一个变量变了，另一个变量也变，因为是同一个空间</li>
+</ol>
+<h2 id="44-销毁变量">4.4 销毁变量</h2>
+<ul>
+<li>用<code>unset()</code>来销毁变量，销毁的是变量名不是变量值，变量值由php的垃圾回收机制销毁</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+    $num1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+	<span style="color:#a6e22e">unset</span>($num1);
+	<span style="color:#66d9ef">echo</span> $num1;
+
+	<span style="color:#75715e">// 实验
+</span><span style="color:#75715e"></span>    $num1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span>;
+	$num2 <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>$num1;
+	<span style="color:#a6e22e">unset</span>($num1);	<span style="color:#75715e">// 销毁的是变量名
+</span><span style="color:#75715e"></span>	<span style="color:#66d9ef">echo</span> $num2;		<span style="color:#75715e">// 10
+</span></code></pre></div><ul>
+<li>没有变量引用的<strong>值</strong>是垃圾。</li>
+</ul>
+<h1 id="5-常量">5 常量</h1>
+<ol>
+<li>常量前没有<code>$</code>符号</li>
+</ol>
+<h2 id="51-定义常量">5.1 定义常量</h2>
+<h2 id="52-预定义常量">5.2 预定义常量</h2>
+<h2 id="53-魔术常量">5.3 魔术常量</h2>
+<h1 id="6-数据类型">6. 数据类型</h1>
+<h2 id="61-基本类型标量类型">6.1 基本类型（标量类型）</h2>
+<h2 id="62-复合类型">6.2 复合类型</h2>
+<h2 id="63-特殊类型">6.3 特殊类型</h2>
+<h2 id="64-类型转换">6.4 类型转换</h2>
+<h1 id="7-运算符">7. 运算符</h1>
+<h1 id="8-判断">8. 判断</h1>
+<h1 id="9-循环">9. 循环</h1>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2020-05-11</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="https://b40du.github.io/posts/note-imooc-shell-basic/">
+			Next<br>笔记-Shell基础
+                </a>
+                
+                
+                
+                <a class="older-posts" href="https://b40du.github.io/posts/note-heima-javascript-basic/">
+			Previous<br>笔记-JavaScript基础
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	This is a customized copyright.
+	
+</div>
+            </div>
+    <script>
+let app;
+
+app = new Vue({
+    el: '#app',
+    data: {
+        scrollY: 0,
+        navOpacity: 0,
+        isDrawerOpen: false,
+        mounted: false,
+        isDarkMode: false
+    },
+    methods: {
+            sgn(t, x) {
+                let k = 1. / (1. - 2 * t);
+                if (x <= t) return 0;
+                else if (x >= 1 - t) return 1;
+                else {
+                    return k * (x - t);
+                }
+            },
+            handleScroll() {
+                this.scrollY = window.scrollY;
+                this.navOpacity = this.sgn(.0, Math.min(1, Math.max(0, window.scrollY / (this.pageHeadHeight() - this.navBarHeight() * 0.8))));
+                const {navBar, navBackground, navTitle, extraContainer, streamContainer} = this.$refs;
+
+                if (this.navOpacity >= 1) {
+                    navBackground.style.opacity = 1;
+                    navTitle.style.opacity = 1;
+                } else {
+                    navBackground.style.opacity = 0;
+                    navTitle.style.opacity = 0;
+                }
+            },
+            handleResize() {
+                const {navBar, navBackground, navTitle, extraContainer, streamContainer} = this.$refs;
+                extraContainer.style.left = (streamContainer.offsetWidth - extraContainer.offsetWidth) + 'px';
+            },
+            navBarHeight() {
+                return this.$refs.navBar.offsetHeight;
+            },
+            pageHeadHeight() {
+                return this.$refs.pageHead.offsetHeight;
+            },
+            toggleDrawer() {
+                this.isDrawerOpen = !this.isDrawerOpen;
+                document.getElementsByTagName('html')[0].style.overflow = this.isDrawerOpen ? 'hidden' : 'unset';
+            },
+            closeDrawer() {
+                this.isDrawerOpen = false;
+                document.getElementsByTagName('html')[0].style.overflow = this.isDrawerOpen ? 'hidden' : 'unset';
+            },
+            toggleDarkMode() {
+                this.isDarkMode = !this.isDarkMode;
+                if (this.isDarkMode==true){
+                    document.cookie = "night=1;path=/";
+                    document.body.classList.add("night");
+                } else {
+                    document.cookie = "night=0;path=/";
+                    document.body.classList.remove("night");
+                }
+            }
+    },
+    created() {
+        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('resize', this.handleResize);
+        window._nonDesktop = function () {
+            let check = false;
+            (function (a) {
+                if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true;
+            })(navigator.userAgent || navigator.vendor || window.opera);
+            return check;
+        };
+        
+        var night = document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        if (night==""){
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                
+            }
+        }else{
+            
+            if (night=="1") {
+                this.toggleDarkMode();
+            }
+        }
+    },
+    mounted() {
+        this.handleScroll();
+        this.handleResize();
+        this.mounted = true;
+
+        
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleResize);
+    }
+});
+</script>
+
+<script src="https://b40du.github.io/js/journal.js"></script>
+    </body>
+</html>

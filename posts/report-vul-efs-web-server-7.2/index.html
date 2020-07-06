@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html><head>
+<title>漏洞分析 之 EFS Web Server 7.2 获取HTTP请求SEH缓冲区溢出</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="漏洞分析报告-EFC Web Server-技术分享-第一篇漏洞分析">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+
+
+
+
+
+
+
+
+<script src="/vendor/js/jquery.min.js" ></script>
+<script src="/vendor/js/popper.min.js" ></script>
+<script src="/vendor/js/bootstrap.min.js" ></script>
+<script src="/vendor/js/smooth-scroll.polyfills.min.js" ></script>
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+<script src="/vendor/js/vue.min.js" ></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://b40du.github.io/scss/journal.min.47aa1ffb60880ad8c72feecd6962a14331eca7a7a30e08354a1ca91009b8bc5b.css" integrity="sha256-R6of&#43;2CICtjHL&#43;7NaWKhQzHsp6ejDgg1ShypEAm4vFs=" media="screen">
+
+
+
+<link rel="stylesheet" href="https://b40du.github.io/scss/dark-mode.min.b13808e7c98cd5aa981a3822fd3421e26f1015876bb15a3fbf8ed5991c382367.css" integrity="sha256-sTgI58mM1aqYGjgi/TQh4m8QFYdrsVo/v47VmRw4I2c=" media="screen">
+
+
+<script src="https://b40du.github.io/js/loadCSS.js"></script>
+<script>
+  loadCSS("https://fonts.googleapis.com/css?family=Lora|Montserrat|Fira+Mono|Noto+Serif+SC|Material+Icons");
+</script>
+
+
+
+
+  
+    <script src="https://b40du.github.io/js/toc-collapse.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+</head><body>
+    	<div id="app"><div ref="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="https://b40du.github.io">
+    
+        <div class="nav-title">
+            爆肚的杂货铺
+        </div>
+        
+        <div class="nav-subtitle">
+            b40du&#39;s blog
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+                
+            
+            
+            
+            <a class="a-block nav-link-item active" href="/posts">
+                归档
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                分类
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                标签
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/about">
+                关于
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/index.xml">
+                RSS订阅
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	This is a customized copyright.
+	
+
+    </div>
+    
+</div><div ref="extraContainer" class="extra-container">
+    
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#1-%e8%bd%af%e4%bb%b6%e7%ae%80%e4%bb%8b" onclick="collapseOthers(`#1-软件简介-nav`)" id="1-软件简介-nav">
+									1. 软件简介
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2-%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0" onclick="collapseOthers(`#2-漏洞复现-nav`)" id="2-漏洞复现-nav">
+									2. 漏洞复现
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#21-%e8%bd%af%e4%bb%b6%e4%b8%8b%e8%bd%bd" onclick="collapseOthers(`#21-软件下载-nav`)" id="21-软件下载-nav">
+									2.1 软件下载
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#22-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba" onclick="collapseOthers(`#22-环境搭建-nav`)" id="22-环境搭建-nav">
+									2.2 环境搭建
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#23-%e8%bd%af%e4%bb%b6%e6%b5%8b%e8%af%95" onclick="collapseOthers(`#23-软件测试-nav`)" id="23-软件测试-nav">
+									2.3 软件测试
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#3-%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90" onclick="collapseOthers(`#3-漏洞分析-nav`)" id="3-漏洞分析-nav">
+									3. 漏洞分析
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#31-%e6%bc%8f%e6%b4%9e%e6%88%90%e5%9b%a0" onclick="collapseOthers(`#31-漏洞成因-nav`)" id="31-漏洞成因-nav">
+									3.1 漏洞成因
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-%e5%88%86%e6%9e%90%e8%bf%87%e7%a8%8b" onclick="collapseOthers(`#32-分析过程-nav`)" id="32-分析过程-nav">
+									3.2 分析过程
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-%e5%88%86%e6%9e%90%e7%bb%93%e8%ae%ba" onclick="collapseOthers(`#33-分析结论-nav`)" id="33-分析结论-nav">
+									3.3 分析结论
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#5-%e7%bb%93%e8%af%ad" onclick="collapseOthers(`#5-结语-nav`)" id="5-结语-nav">
+									5. 结语
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#6-%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" onclick="collapseOthers(`#6-参考资料-nav`)" id="6-参考资料-nav">
+									6. 参考资料
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a class="pagination-action" v-on:click="toggleDarkMode">
+            <i class="material-icons pagination-action-icon" v-if="isDarkMode">
+                brightness_4
+            </i>
+            <i class="material-icons pagination-action-icon" v-else="isDarkMode">
+                brightness_7
+            </i>
+        </a>
+        
+        
+    </div>
+</div><div class="single-column-drawer-container" ref="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                    
+                
+                
+                
+                <a class="a-block drawer-menu-item active" href="/posts">
+                    归档
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    分类
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    标签
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/about">
+                    关于
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/index.xml">
+                    RSS订阅
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#1-%e8%bd%af%e4%bb%b6%e7%ae%80%e4%bb%8b" onclick="collapseOthers(`#1-软件简介-nav`)" id="1-软件简介-nav">
+									1. 软件简介
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#2-%e6%bc%8f%e6%b4%9e%e5%a4%8d%e7%8e%b0" onclick="collapseOthers(`#2-漏洞复现-nav`)" id="2-漏洞复现-nav">
+									2. 漏洞复现
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#21-%e8%bd%af%e4%bb%b6%e4%b8%8b%e8%bd%bd" onclick="collapseOthers(`#21-软件下载-nav`)" id="21-软件下载-nav">
+									2.1 软件下载
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#22-%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba" onclick="collapseOthers(`#22-环境搭建-nav`)" id="22-环境搭建-nav">
+									2.2 环境搭建
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#23-%e8%bd%af%e4%bb%b6%e6%b5%8b%e8%af%95" onclick="collapseOthers(`#23-软件测试-nav`)" id="23-软件测试-nav">
+									2.3 软件测试
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#3-%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90" onclick="collapseOthers(`#3-漏洞分析-nav`)" id="3-漏洞分析-nav">
+									3. 漏洞分析
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#31-%e6%bc%8f%e6%b4%9e%e6%88%90%e5%9b%a0" onclick="collapseOthers(`#31-漏洞成因-nav`)" id="31-漏洞成因-nav">
+									3.1 漏洞成因
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-%e5%88%86%e6%9e%90%e8%bf%87%e7%a8%8b" onclick="collapseOthers(`#32-分析过程-nav`)" id="32-分析过程-nav">
+									3.2 分析过程
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-%e5%88%86%e6%9e%90%e7%bb%93%e8%ae%ba" onclick="collapseOthers(`#33-分析结论-nav`)" id="33-分析结论-nav">
+									3.3 分析结论
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#5-%e7%bb%93%e8%af%ad" onclick="collapseOthers(`#5-结语-nav`)" id="5-结语-nav">
+									5. 结语
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#6-%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99" onclick="collapseOthers(`#6-参考资料-nav`)" id="6-参考资料-nav">
+									6. 参考资料
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div ref="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a ref="navTitle" class="navbar-brand" href="https://b40du.github.io">
+            爆肚的杂货铺
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" v-on:click="toggleDarkMode">
+            <i class="material-icons" v-if="isDarkMode">
+                brightness_4
+            </i>
+            <i class="material-icons" v-else="isDarkMode">
+                brightness_7
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" ref="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="https://b40du.github.io">
+        <div class="single-column-header-title">爆肚的杂货铺</div>
+        
+        <div class="single-column-header-subtitle">b40du&#39;s blog</div>
+        
+
+    </a>
+</div>
+            <div id="content">
+<div ref="streamContainer" class="stream-container">
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    漏洞分析 之 EFS Web Server 7.2 获取HTTP请求SEH缓冲区溢出
+                    
+                    <div class="post-subtitle">
+                        漏洞分析报告-EFC Web Server-技术分享-第一篇漏洞分析
+                    </div>
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2019-10-11 16:38
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB">技术分享</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/vul-analysis">vul-analysis</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <h1 id="1-软件简介">1. 软件简介</h1>
+<p>Easy File Sharing Web Server（简易文件共享Web服务器）是一种Internet文件共享程序，允许我们在没有任何其他软件或服务的情况下托管安全的个人Web服务器。访问者可以通过Web浏览器（Internet Explorer，Netscape，Opera等）轻松上传/下载文件。</p>
+<p>因此，简单来说，它可以帮助我们与朋友或同事共享文件。这个基于Web的软件可以让我们将文件传送给任何拥有配置有浏览器的PC，而不用繁琐地安装多个软件。也可以让我们的同事或朋友轻松浏览用我的PC搭建的服务器并进行搜索，显示和/或下载经过我授予他们访问权限的文件。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508164427.png" alt=""></p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508164459.png" alt=""></p>
+<h1 id="2-漏洞复现">2. 漏洞复现</h1>
+<h2 id="21-软件下载">2.1 软件下载</h2>
+<p>Exploit-DB漏洞库地址：https://www.exploit-db.com/exploits/39008</p>
+<p>软件下载地址：https://www.exploit-db.com/apps/60f3ff1f3cd34dec80fba130ea481f31-efssetup.exe</p>
+<p>Python下载地址：https://www.python.org/ftp/python/2.7.16/python-2.7.16.msi</p>
+<h2 id="22-环境搭建">2.2 环境搭建</h2>
+<p>安装Easy File Sharing Web Server 7.2</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508164606.png" alt=""></p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508164720.png" alt=""></p>
+<p>安装成功后，打开桌面上的EFS软件，点击Try it!</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508164749.png" alt=""></p>
+<p>可以看到，EFS Web Server已经开始运行，此时在我们的本地建立了一个Web服务器，并开启了80端口和443端口。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508164831.png" alt=""></p>
+<p>然后打开IE浏览器，在地址栏输入http://127.0.0.1/或者http://localhost/或者是EFS软件启动时显示的IP地址类型的http链接http://192.168.25.142</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508164953.png" alt=""></p>
+<p>此时我们可以看到，IE浏览器访问本地网页的时候，是正常显示的。</p>
+<p>如果我们的电脑没有Python环境，我们需要安装好Python环境，目的是为了方便之后我们使用Poc.py进行简易测试。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165027.png" alt=""></p>
+<p>然后我们检查一下Poc.py，确认无误。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165055.png" alt=""></p>
+<h2 id="23-软件测试">2.3 软件测试</h2>
+<p>接下来我们打开cmd.exe，并使用python执行Poc.py，输入参数，看看会发生什么。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165159.png" alt=""></p>
+<p>我们刷新刚才访问的IE浏览器界面，发现网页崩溃了。同时我们发现之前搭建本地Web环境的EFS软件已经退出运行了，看来是由于服务器崩溃导致的网页崩溃，而非本地浏览器的问题。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165234.png" alt=""></p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165311.png" alt=""></p>
+<p>此时基本上我们已经把漏洞复现了出来。</p>
+<p>但是我们也观察到了另外一个情况，按理说，xp系统如果程序遇到异常，会弹出一个错误对话框，并能够在其中查找到错误的类型以及内存地址，也就是Windows异常处理机制作用的显示形式。</p>
+<p>而此时此刻我们没有发现错误对话框，程序崩溃时反而直接自动退出了，因此我们需要思考一下，是不是程序的错误导致异常处理机制也产生了错误，这也是我们后面分析的一个重点。</p>
+<h1 id="3-漏洞分析">3. 漏洞分析</h1>
+<h2 id="31-漏洞成因">3.1 漏洞成因</h2>
+<p>Easy File Sharing Web Server 7.2 版本中存在缓冲区溢出漏洞。</p>
+<p>远程攻击者可发送GET数据包，由于软件中的fsws.exe在处理GET数据包的路径时，没有对路径内容进行检查，而是直接拼接传参，导致某些关键指针被覆盖，从而导致在软件使用的sqlite3.dll中执行某个函数时，由于引用了无效地址，进而触发SEH异常处理流程或覆盖SHE异常处理函数的指针，导致任意代码执行。</p>
+<p>因此，简单来说，远程攻击者可以发送GET数据包，用数据包中的长字符串利用该漏洞执行任意代码。</p>
+<p>接下来我们来回溯一下，分析该软件的详细过程。</p>
+<h2 id="32-分析过程">3.2 分析过程</h2>
+<p>首先我们附加EFS Web Server这个程序，按<code>g</code>运行，然后用<code>cmd.exe</code>执行我们从漏洞库下载的<code>Poc.py</code>，发现程序中断了，产生了异常。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165424.png" alt=""></p>
+<p>可以看到，这里执行了一个<code>cmp</code>的汇编指令，作用是比较后面两个操作数是否相等。比较的是1个四字节指针 <code>[eax+4Ch]</code>和<code>0A29A697h</code>地址上的内容，那么在比较的过程中，发现<code>eax</code>寄存器的值已经变成了<code>41414141</code>。显然这个地址不太像一个可读的地址。</p>
+<p>那不妨查看一下<code>eax</code>的值，在命令窗口输入<code>dd eax</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165502.png" alt=""></p>
+<p>然后我们可以看到，在输入<code>dd eax</code>之后，发现内存空间里全部都是问号，<code>eax</code>值是一个不可读的地址。也就是说这个是空间没有被开辟出来导致的内存访问异常。</p>
+<p>接下来我们按<code>g</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165537.png" alt=""></p>
+<p>执行过后，我们发现，<code>eip</code>指向<code>41414141</code>，这同样是一个不可读的地址，到这个时候我们已经发现<code>41414141</code>其实是我们之前构造的payload里面大写字母A的ASCII码。所以说，现在是由于程序的某处产生了错误，导致栈被覆盖。</p>
+<p>出现异常时，理论上程序会进入异常处理链进行异常处理，但是由于栈中的SEH链也被覆盖，导致这个链中存放的SEH异常处理函数的指针也被覆盖，因而<code>eip</code>指向的地址是<code>41414141</code>。</p>
+<p>而在异常处理中呢，会调用这个SEH中的异常处理指针，去执行异常处理函数。那么当这个指针被覆盖的时候，调用这个指针指向的地址如果被我们所控制，就能够按照我们的想法，去执行一些代码，这也是后面漏洞利用的一种方式。</p>
+<p>那么我们现在要分析一下，为什么<code>[eax+0Ch]</code>这个地址会被<code>41414141</code>覆盖。这个时候我们需要使用<code>kb</code>命令来查看一下之前堆栈调用的情况。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165612.png" alt=""></p>
+<p>可以看到，在程序的异常处理流程中，调用了<code>ntdll.dll</code>中的异常处理分发函数，而在调用这个函数之前呢，会在<code>sqlite3!sqlite3_declare_vtab</code>中进行一个函数调用，调用<code>61c6286c</code>地址处的<code>ntdll!KiUserExceptionDispatcher</code>函数。</p>
+<p>同时，我们回想起来，之前分析<code>cmp</code>代码命令的时候，所处的位置也是<code>sqlite3</code>这个dll里面，那么我们要用IDA去看一下<code>sqlite3</code>这个dll中有什么古怪。</p>
+<p>用IDA打开之后，我们按<code>g</code>输入跳转的地址，这里我们跳转到之前<code>cmp</code>代码发生异常的地方，该地址为<code>61c277f6</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165749.png" alt=""></p>
+<p>我们可以看到，这里所处的函数是一个叫做<code>_sqlite3SafetyCheckOk</code>的函数。那么我们通过<code>F5</code>去看一下这个函数的伪代码。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165859.png" alt=""></p>
+<p>那么我们现在能看到，所处的这个函数呢，整体是一个if语句的判断，中间又包含着一个if语句，第二个if语句会判断<code>a1+76</code>的值和后面的数值是否相等，如果不相等，则处理这个if语句内的函数。</p>
+<p>通过IDA可以看出，<code>a1</code>的值，其实就是<code>eax</code>的值，而<code>76</code>呢，就是我们之前分析的异常错误代码中的<code>4Ch</code>这个偏移的十进制值，那么我们关心的主要就是这个<code>a1</code>，它此时此刻应该是一个指针，而且是已经被覆盖成<code>41414141</code>这样的畸形字符串的指针。</p>
+<p>同时可以看出，<code>a1</code>是从函数外部传入的一个参数，并且这个函数只有一个参数就是，那么调用这个函数的时候，<code>a1</code>这个参数就已经是畸形字符串的值了。因此我们需要向外回溯函数，这个时候需要回溯的函数地址就是调用这个函数的<code>61c6286c</code>这个地址，我们同样使用IDA在<code>sqlite3</code>中跟踪到这个地址。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508165923.png" alt=""></p>
+<p>跳转到这个地址之后，我们关注的是上面这个<code>_sqlite3LockAndPrepare</code>函数，因为<code>61c6286c</code>这里记录的是一个返回地址，返回地址通常是call函数下面的那句汇编代码。所以<code>sqlite3SafetyCheckOk</code>函数的这个<code>call</code>调用，实际上是上面<code>_sqlite3LockAndPrepare</code>函数对其进行的调用。</p>
+<p>同样的，我们<code>F5</code>看一下伪代码。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170045.png" alt=""></p>
+<p>得到伪代码之后我们关注<code>_sqlite3SafetyCheckOk</code>这个函数的参数，它同样调用了一个<code>a1</code>，这个<code>a1</code>来自于<code>_sqlite3LockAndPrepare</code>这个函数的参数，我们可以看到在这个函数中，这个<code>a1</code>并没有被赋值。也就是说，这个时候<code>a1</code>仍旧是作为一个畸形字符串，传入了<code>_sqlite3LockAndPrepare</code>这个函数中，那么这仍然不是我们需要定位的位置，我们需要接着往下回溯。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170133.png" alt=""></p>
+<p>我们可以从输入<code>kb</code>后的栈回溯看到，栈中还涉及到了<code>004968f4</code>这个地址，这个地址是<code>fsws.exe</code>这个可执行文件所调用的地址，接下来我们需要回到<code>fsws.exe</code>这个可执行文件的领空，来看一下<code>004968f4</code>这个地址到底执行了一些什么内容。</p>
+<p>因此我们需要通过另一个IDA来打开<code>fsws.exe</code>这个可执行文件，打开之后，通过<code>jmp</code>的方式，<code>jmp</code>到<code>004968f4</code>这个地址。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170252.png" alt=""></p>
+<p>跳转之后，我们仍然关注上面的<code>call</code>调用，<code>sqlite3_prepare_v2</code>被调用，返回地址为<code>004968F4</code>。可以看到整个函数的名称是<code>sub_4968D0</code>，这个函数也非常短，同样通过<code>F5</code>的方式来看一下这个函数。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170329.png" alt=""></p>
+<p>进入这个函数以后我们关注<code>sqlite3_prepare_v2</code>这个函数参数内的this指针，发现是由<code>sub_4968D0</code>这个函数传入的，并且这个变量仍然没有在函数里面被赋值，也就是说在调用<code>sub_4968D0</code>这个函数的时候，this指针仍然是被畸形字符串所覆盖的。</p>
+<p>看一下之前用<code>kb</code>进行的堆栈回溯的调用信息，发现没有再往下的地方了。那么我们只能定位<code>sub_4968D0</code>这个函数的入口，来看一下我们能不能得到更往前的函数的逻辑的调用。</p>
+<p>我们重新附加这个EFS Web Server软件。附加之后，我们使用<code>bp 4968d0</code>命令，在刚才分析到的<code>sub_4968d0</code>函数的入口地址下断，下断之后按g执行，然后发送GET包，发包之后，如果命中了刚才设置的断点，需要连续执行，直到到达最接近漏洞触发的断点的位置。并在该处进行分析。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170427.png" alt=""></p>
+<p>现在我们发送GET包。可以看到，已经第一次命中了<code>sub_4968d0</code>这个函数的入口地址。接下来我们按<code>g</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170452.png" alt=""></p>
+<p>现在已经第二次命中了<code>sub_4968d0</code>这个函数的入口地址。接下来继续按<code>g</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170521.png" alt=""></p>
+<p>第三次命中断点，继续按<code>g</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170543.png" alt=""></p>
+<p>可以看到，在三次命中了我们设置的<code>sub_4968d0</code>这个函数的入口地址之后，我们命中了一个<code>eax</code>是异常地址值的位置，我们发现这是我们上次分析到的产生错误的地方。也就是说，第三次命中这个函数的时候，是我们最接近漏洞触发位置的时候。因此我们就从第三次命中这个函数入口地址来分析一下到底发生了什么事情。</p>
+<p>接下来我们需要再次附加这个EFS软件，附加之后我们继续使用刚才的方法，设置断点，按<code>g</code>执行，三次断点之后达到这个最接近漏洞触发位置。然后在这个位置通过<code>kb</code>来回溯一下堆栈调用，看看有没有之前的堆栈调用。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170626.png" alt=""></p>
+<p>可以看到栈回溯之后呢，我们没有看到有更上层函数的调用。也许是因为上层的调用没有标准的使用<code>ebp</code>。这个时候我们需要分析一下，在函数入口地址处，寄存器的情况，看看有没有与畸形字符串相关的信息。我们输入<code>dc eax</code>来观察一下<code>eax</code>寄存器。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170734.png" alt=""></p>
+<p>在输入了<code>dc eax</code>之后呢，发现<code>eax</code>地址对应的地方存放着一个sql语句，而这个sql语句呢，有一个查询条件，查询的条件就是payload中的畸形字符串。我们发现，<code>esp</code>与<code>eax</code>之间的距离非常接近，说明sql语句查询的字符串就在栈上，那么这个字符串就很有可能是因为sql语句查询字符串的拼接导致的栈的溢出，从而产生漏洞。
+下面我们用IDA来查找一下这个字符串，看看在IDA中这个字符串是处于一个什么样的角色，我们回到IDA然后搜索一下对应的字符串，在搜索字符串中输入<code>select * from %s</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170827.png" alt=""></p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508170900.png" alt=""></p>
+<p><img src="https://b40du.me/usr/uploads/2019/11/2614621421.png" alt="2019-11-07T11:17:00.png"></p>
+<p>可以看到，在很多地方都调用了类似的sql语句，我们需要找到和我们在WinDbg中看到的sql语句最接近的语句。显然在代码段中地址为<code>00497584</code>处的sql语句（图3.2-19）和我们在WinDbg中看到的更相像，我们需要记下这个地址，并在后面下断点进行观察，接下来继续查找。</p>
+<p>又查找了两个sql语句之后发现这样查找需要花费很长时间，不胜其烦，索性我们查找前面的<code>aSelectFromSWhe</code>这个常量，我们把IDA View向上翻到最顶端，从头开始搜索这个常量进行查找。
+查找到两个目标sql语句后，进入了<code>.data</code>段，因此在<code>fsws.exe</code>这个可执行文件中一共有这两处sql语句是我们关心的。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171018.png" alt=""></p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171036.png" alt=""></p>
+<p>我们需要记录下来这两个关键地址，分别为：<code>0049758A</code>，<code>0049774E</code>。我们在IDA中跟入<code>0049758A</code>处看一下。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171105.png" alt=""></p>
+<p>可以发现<code>sprintf</code>函数的调用，这是一个很容易出问题的函数，如果不控制传入字符串的长度，极为容易造成溢出。并且在<code>sprintf</code>的下面就是我们回溯的<code>sub_4968D0</code>函数，进一步推测，很有可能这就是造成漏洞的位置。另一处<code>sprintf</code>函数调用的情况也是如此，因此我们需要在这两处函数地址都下断点，看看是哪一处有机会造成漏洞。</p>
+<p>接下来我们关闭WinDbg，重新附加EFS Web Server。附加之后，在这两处<code>sprintf</code>函数的地址下断点，下断点之后按<code>g</code>执行，执行之后发送GET包。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171147.png" alt=""></p>
+<p>发现断点断在<code>0049774e</code>处，这个时候我们需要观察一下，到底是不是这处<code>sprintf</code>执行了我们想要的字符串拼接，我们通过<code>dd esp</code>来看一下目前栈帧的情况。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171218.png" alt=""></p>
+<p>同时，我们需要通过F5来看一下我们刚才找到的那个<code>sprintf</code>函数的伪代码，在IDA中<code>jmp</code>到<code>0049774e</code>，<code>F5</code>之后发现这一处地址位置调用了5个参数。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171249.png" alt=""></p>
+<p>我们回忆一下<code>select * from %s where %s = %s</code>这个sql语句的结构，其中我们需要关心的是包含畸形payload语句的位置，也就是第3个<code>%s</code>。</p>
+<p>在<code>sprintf</code>这个函数的参数中，第5个参数，也就是<code>a3</code>，对应的是sql语句中的第3个<code>%s</code>，是最需要关注的。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171336.png" alt=""></p>
+<p>我们用dc查询两个参数的地址，发现第2个参数地址<code>005a283c</code>存放的就是<code>select * from %s where %s = %s</code>这个查询语句，发现第5个参数地址<code>0012c664</code>存放的就是接收到的畸形字符串的值。</p>
+<p>那么这个字符串比较的意义在哪里呢？</p>
+<p>我们回想一下，在访问网页的时候，我们发送一个GET包，实际上会在服务器端请求相应的页面。这个过程如果是一个动态的请求过程，比如<code>http://xxx.xxx.xxx/php?id=xxxx</code>这种动态的请求过程，它就会去服务器查找对应的页面，而这个查找的过程就是字符串比较的过程。</p>
+<p>在这个过程中，EFS会执行一个<code>sprintf</code>，进行一次字符串的拼接。那么我们不妨跟踪一下<code>sprintf</code>函数的第一个参数地址，来看一下拼接之后会发生什么。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171444.png" alt=""></p>
+<p>我们先单步步过，执行<code>sprintf</code>的过程，然后用<code>dc</code>查看第一个参数的地址<code>01b25fd4</code>，发现字符串已经完全拷贝到栈空间。接下来继续单步跟踪。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171512.png" alt=""></p>
+<p>发现在单步跟踪几步之后呢，我们执行到了<code>004968d0</code>这个函数的调用位置，我们来查看一下它传入的参数，传入的参数中呢，第2个参数是我们比较关心的，因为<code>eax</code>此时存放的是已经被拼接畸形字符串的sql语句。我们通过<code>dc esp</code>来查看一下栈空间，再查看一下第2个参数的信息。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171547.png" alt=""></p>
+<p>实际上这个时候，我们关心的畸形字符串已经传入到函数中。接下来我们需要跟入这个函数（t）。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171642.png" alt=""></p>
+<p>进入之后呢，我们需要进行单步跟踪，当进行到<code>004968ec</code>的时候，我们会进行一次赋值操作，将<code>ecx</code>地址指向位置存放的值交给<code>eax</code>，实际上这是一个指针的赋值操作，我们可以看到后面的提示，<code>ecx</code>的指向的位置<code>01b27058</code>地址处，已经被覆盖成了<code>41414141</code>。</p>
+<p>这就是一个畸形字符串的覆盖，可以从上面寄存器的信息看出，<code>eax</code>和<code>ecx</code>的值是非常接近的，<code>eax</code>是<code>01b25fd4</code>，<code>ecx</code>是<code>01b27058</code>，也就是说赋值之后，如果<code>eax</code>的值非常大，就会覆盖掉<code>ecx</code>中对应的位置。</p>
+<p>在这里可以计算一下，<code>ecx – eax – len (&quot;select * from %s where %s = ’%s’ &quot;)</code>的长度， <code>(01b27058-01b25fd4)(十六进制)-33(十进制)=1084(十六进制)-33(十进制)=4195个字节</code>。也就是说，如果机型字符串的长度超过4195个字节，就会触发内存访问异常。</p>
+<p>下面我们通过L来增大我们可以查看到的缓冲区的大小。我们输入<code>dc eax L1000</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171805.png" alt=""></p>
+<p>可以看到往下扩展了非常多，在GET包的位置<code>01b28a64</code>前面，已经被覆盖了<code>41414141</code>，而这个地址是远远大于<code>eax</code>和<code>ecx</code>的地址的。接下来我们单步步过。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171833.png" alt=""></p>
+<p>发现这个时候会把赋值之后的<code>eax</code>推入栈中。随后会调用<code>00510e58</code>这个位置的函数，这个时候呢，<code>eax</code>会作为第一个参数传入到这个函数中。我们通过<code>dd esp</code>来看一下，第一个参数已经变成了畸形字符串。</p>
+<p>可以看出<code>004968ef</code>是一个比较关键的函数调用的位置。我们进入IDA看一下伪代码。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171925.png" alt=""></p>
+<p>此时，this指针就是刚才所找到的<code>eax</code>，<code>eax</code>已经是一个畸形字符串，这个时候我们传入到<code>sqlite3_prepare_v2</code>这个函数，就会执行接下来的语句。接下来单步步入看一下。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508171956.png" alt=""></p>
+<p>发现步入之后，会执行一处跳转，跳转就会从我们现在的<code>fsws.exe</code>这个可执行文件跳转到另一个<code>sqlite3.dll</code>这个动态链接库中去处理函数。</p>
+<p>那么接下来就是我们之前已经分析的（图3.2–8）过程，在<code>_sqlite3LockAndPrepare</code>这个函数中进行了一处安全的检查，这个检查函数是<code>sqlite3SafetyCheckOk</code>，这个过程会调用<code>a1</code>的指针，这个时候<code>a1</code>的指针会作为一个畸形字符串传入，这样我们在执行<code>sqlite3SafetyCheckOk</code>这个函数，再次做引用的时候，会引用这个畸形字符串做地址的指针，最后造成一个无效指针引用，从而引发了这个SEH异常处理，或者SEH函数的重新定位，最后达到了一个代码执行的效果。</p>
+<h2 id="33-分析结论">3.3 分析结论</h2>
+<p>我们现在可以总结一下漏洞的真正成因。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200508172201.png" alt=""></p>
+<p>这个漏洞成因就是在我们进行sql语句检查之前，调用了一个<code>sprintf</code>来进行一个sql语句的拼接，拼接过程中没有对GET包的长度进行一个有效控制，而是直接传入我们<code>v15</code>这个地址的变量中，从而导致<code>v4</code>这个变量被覆盖，覆盖之后会直接执行<code>sqlite3</code>这个动态链接库中的函数，执行的过程中会引用这个this指针的值，在引用的过程中造成了无效指针引用，从而产生漏洞。</p>
+<h1 id="5-结语">5. 结语</h1>
+<p>一句话简单对该漏洞进行总结：</p>
+<p>由于使用<code>sprintf</code>格式化sql语句查询的时候对长度没有严格限制，导致缓冲区溢出。</p>
+<p>栈溢出的典型解决方法是使用微软提供的安全函数，比如安全的<code>sprintf</code>，或者对字符串的长度进行限制。</p>
+<h1 id="6-参考资料">6. 参考资料</h1>
+<ul>
+<li><a href="https://bbs.pediy.com/thread-173853.htm">Ddlx. 白话windows之四 异常处理机制(VEH、SEH、TopLevelEH&hellip;)</a></li>
+</ul>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2019-10-11</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="https://b40du.github.io/posts/note-aqniu-network-engineer/">
+			Next<br>笔记-网络工程师
+                </a>
+                
+                
+                
+                <a class="older-posts" href="https://b40du.github.io/about/">
+			Previous<br>About
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	This is a customized copyright.
+	
+</div>
+            </div>
+    <script>
+let app;
+
+app = new Vue({
+    el: '#app',
+    data: {
+        scrollY: 0,
+        navOpacity: 0,
+        isDrawerOpen: false,
+        mounted: false,
+        isDarkMode: false
+    },
+    methods: {
+            sgn(t, x) {
+                let k = 1. / (1. - 2 * t);
+                if (x <= t) return 0;
+                else if (x >= 1 - t) return 1;
+                else {
+                    return k * (x - t);
+                }
+            },
+            handleScroll() {
+                this.scrollY = window.scrollY;
+                this.navOpacity = this.sgn(.0, Math.min(1, Math.max(0, window.scrollY / (this.pageHeadHeight() - this.navBarHeight() * 0.8))));
+                const {navBar, navBackground, navTitle, extraContainer, streamContainer} = this.$refs;
+
+                if (this.navOpacity >= 1) {
+                    navBackground.style.opacity = 1;
+                    navTitle.style.opacity = 1;
+                } else {
+                    navBackground.style.opacity = 0;
+                    navTitle.style.opacity = 0;
+                }
+            },
+            handleResize() {
+                const {navBar, navBackground, navTitle, extraContainer, streamContainer} = this.$refs;
+                extraContainer.style.left = (streamContainer.offsetWidth - extraContainer.offsetWidth) + 'px';
+            },
+            navBarHeight() {
+                return this.$refs.navBar.offsetHeight;
+            },
+            pageHeadHeight() {
+                return this.$refs.pageHead.offsetHeight;
+            },
+            toggleDrawer() {
+                this.isDrawerOpen = !this.isDrawerOpen;
+                document.getElementsByTagName('html')[0].style.overflow = this.isDrawerOpen ? 'hidden' : 'unset';
+            },
+            closeDrawer() {
+                this.isDrawerOpen = false;
+                document.getElementsByTagName('html')[0].style.overflow = this.isDrawerOpen ? 'hidden' : 'unset';
+            },
+            toggleDarkMode() {
+                this.isDarkMode = !this.isDarkMode;
+                if (this.isDarkMode==true){
+                    document.cookie = "night=1;path=/";
+                    document.body.classList.add("night");
+                } else {
+                    document.cookie = "night=0;path=/";
+                    document.body.classList.remove("night");
+                }
+            }
+    },
+    created() {
+        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('resize', this.handleResize);
+        window._nonDesktop = function () {
+            let check = false;
+            (function (a) {
+                if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true;
+            })(navigator.userAgent || navigator.vendor || window.opera);
+            return check;
+        };
+        
+        var night = document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        if (night==""){
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                
+            }
+        }else{
+            
+            if (night=="1") {
+                this.toggleDarkMode();
+            }
+        }
+    },
+    mounted() {
+        this.handleScroll();
+        this.handleResize();
+        this.mounted = true;
+
+        
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleResize);
+    }
+});
+</script>
+
+<script src="https://b40du.github.io/js/journal.js"></script>
+    </body>
+</html>
