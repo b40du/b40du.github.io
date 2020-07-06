@@ -18,24 +18,24 @@
         <pubDate>Mon, 06 Jul 2020 23:56:33 +0800</pubDate>
         
         <guid>https://b40du.github.io/posts/writeup-chaitin-xxe_labs-01/</guid>
-        <description>爆肚的杂货铺 https://b40du.github.io/posts/writeup-chaitin-xxe_labs-01/ -&lt;h1 id=&#34;xxe实验室&#34;&gt;xxe实验室&lt;/h1&gt;
+        <description>爆肚的杂货铺 https://b40du.github.io/posts/writeup-chaitin-xxe_labs-01/ -&lt;h1 id=&#34;1-xxe实验室&#34;&gt;1. xxe实验室&lt;/h1&gt;
 &lt;p&gt;前三个比较简单，直接进入第四个&lt;/p&gt;
 &lt;p&gt;首先我们要明确&lt;code&gt;Blind XXE&lt;/code&gt;的用途，对于传统的&lt;code&gt;XXE&lt;/code&gt;来说，必须要求服务器有回显或者报错，才能使用&lt;code&gt;XXE&lt;/code&gt;读取服务器端的文件。如果服务器没有回显，只能使用&lt;code&gt;Blind XXE&lt;/code&gt;漏洞来构建一条带外信道提取数据。&lt;/p&gt;
 &lt;p&gt;那么从源代码来看，前几个和第四个有何不同呢&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;DOMDocument.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;DOMDocument.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707023900.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;SimpleXMLElement.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;SimpleXMLElement.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707024003.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;simplexml_load_string.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;simplexml_load_string.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707024044.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;code&gt;BlindXXE.php&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;BlindXXE.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707024120.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;我们发现&lt;code&gt;BlindXXE.php&lt;/code&gt;的源代码，直接去掉了回显，没有打印变量，保存到缓冲区的步骤。&lt;/p&gt;
@@ -51,7 +51,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;flag{xxe_easy}&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h1 id=&#34;短信&#34;&gt;短信&lt;/h1&gt;
+&lt;h1 id=&#34;2-短信&#34;&gt;2. 短信&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;进入靶场首页，发现一个类似cms的商务站页面&lt;/li&gt;
 &lt;/ul&gt;
@@ -134,7 +134,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;flag{simple_phpxxe}&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h1 id=&#34;网络xxe&#34;&gt;网络xxe&lt;/h1&gt;
+&lt;h1 id=&#34;3-web-xxe1&#34;&gt;3. web-xxe1&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;首先登入靶场首页，发现调皮的Hello DaLao：&lt;/li&gt;
 &lt;/ul&gt;
@@ -177,7 +177,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;flag{xxeisnotsafe}&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h1 id=&#34;web-xxe2&#34;&gt;web-xxe2&lt;/h1&gt;
+&lt;h1 id=&#34;4-web-xxe2&#34;&gt;4. web-xxe2&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;首先登入靶场首页，发现Apache2 Ubuntu默认页面，猜测可能存在隐藏目录&lt;/li&gt;
 &lt;/ul&gt;
