@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Writeup on 爆肚的杂货铺</title>
-    <link>https://b40du.github.io/categories/writeup/</link>
-    <description>Recent content in Writeup on 爆肚的杂货铺</description>
+    <title>xxe on 爆肚的杂货铺</title>
+    <link>https://b40du.github.io/tags/xxe/</link>
+    <description>Recent content in xxe on 爆肚的杂货铺</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This is a customized copyright.</copyright>
     <lastBuildDate>Mon, 06 Jul 2020 23:56:33 +0800</lastBuildDate>
     
-	<atom:link href="https://b40du.github.io/categories/writeup/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://b40du.github.io/tags/xxe/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -26,18 +26,6 @@
  简单的方法，直接在有回显的地方使用php的filter协议读取文件   然后base64解密，得到flag   flag{xxe_easy}
  短信  进入靶场首页，发现一个类似cms的商务站页面   四处点点看看，发现一个论坛   看看能不能注册，发现管理员禁止了注册   尝试登录，发现每次都需要滑块认证   那么还是上大杀器，目录扫描吧，御剑跑起来   而在这其中呢，/readme.txt文件中有很明显的线索，告诉我们这是一个S-CMS建站系统   然后我们对其进行搜索，看看有没有可以利用的漏洞，发现大都是CNVD录入的SQL注入漏洞，同时看到很多文章都是对这种CMS进行源代码审计查找漏洞的，我们不妨把源程序下载下来，由于是老版本的靶场，特地找了一个老版本的进行下载 然后我们手动的搜索容易产生XXE漏洞的标志性函数simplexml_load_string()   PHP 中的以 simplexml_load 开头的函数默认会解析外部实体，有 XXE 漏洞的标志性函数为 simplexml_load_string()
   经过反复实验，找到一个非常可疑的页面，该页面是api目录下的notify.php页面，这里的$GLOBALS[&#39;HTTP_RAW_POST_DATA&#39;]函数，和php://input的传参方式是一样的，但后面没有对libxml进行过滤，直接就传入了simplexml_load_string()函数   然后我们看看最新版的CMS改成了什么样子，发现多了一个libxml_disable_entity_loader(true)进行保护    网页访问该页面，不会爆出页面不存在的错误，我们使用burp抓包，并发送xml类型的post请求看看</description>
-    </item>
-    
-    <item>
-      <title>Writeup 之 Upload-Labs 魔改flag版</title>
-      <link>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</link>
-      <pubDate>Sat, 04 Jul 2020 23:48:33 +0800</pubDate>
-      
-      <guid>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</guid>
-      <description>今日总结：  这次靶场主要是做这个有源码的靶场，所以理解源码的含义非常重要  上传实验室-p1  第一关很简单，直接上传1.php，发现前端js报错   推测是前端js检查文件后缀类型，查看js代码，发现js对文件后缀进行了判断   个人习惯直接在控制台重写这个函数而不是用插件，直接在控制台增加.php类型   上传完成后，复制上传文件的地址   使用菜刀进行连接   查看flag   flag{a6487868}
- 上传实验室-p2  由于可以查看源码，直接看源码  发现后端在判断文件类型     我们尝试发一个1.php文件，但是改了centent-type类型   发现成功上传，复制上传文件的路径   使用菜刀连接，发现flag文件   找到flag   flag{5b323cff}
- 上传实验室-p3  首先我们看源码，发现很多办法都失效了   那么我们尝试用php3试试，发现成功上传，然后复制上传文件路径   连接菜刀，发现flag文件   查看flag   flag{22e47e94}
- 上传实验室-p4  首先我们看源码，发现很多办法都失效了    但是.</description>
     </item>
     
   </channel>
