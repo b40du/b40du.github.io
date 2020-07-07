@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This is a customized copyright.</copyright>
-    <lastBuildDate>Tue, 07 Jul 2020 22:33:20 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 07 Jul 2020 23:35:20 +0800</lastBuildDate>
     
 	<atom:link href="https://b40du.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>business-logic</title>
       <link>https://b40du.github.io/tags/business-logic/</link>
-      <pubDate>Tue, 07 Jul 2020 22:33:20 +0800</pubDate>
+      <pubDate>Tue, 07 Jul 2020 23:35:20 +0800</pubDate>
       
       <guid>https://b40du.github.io/tags/business-logic/</guid>
       <description></description>
@@ -24,7 +24,7 @@
     <item>
       <title>wp</title>
       <link>https://b40du.github.io/tags/wp/</link>
-      <pubDate>Tue, 07 Jul 2020 22:33:20 +0800</pubDate>
+      <pubDate>Tue, 07 Jul 2020 23:35:20 +0800</pubDate>
       
       <guid>https://b40du.github.io/tags/wp/</guid>
       <description></description>
@@ -33,7 +33,7 @@
     <item>
       <title>writeup</title>
       <link>https://b40du.github.io/tags/writeup/</link>
-      <pubDate>Tue, 07 Jul 2020 22:33:20 +0800</pubDate>
+      <pubDate>Tue, 07 Jul 2020 23:35:20 +0800</pubDate>
       
       <guid>https://b40du.github.io/tags/writeup/</guid>
       <description></description>
@@ -42,7 +42,7 @@
     <item>
       <title>业务逻辑</title>
       <link>https://b40du.github.io/tags/%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91/</link>
-      <pubDate>Tue, 07 Jul 2020 22:33:20 +0800</pubDate>
+      <pubDate>Tue, 07 Jul 2020 23:35:20 +0800</pubDate>
       
       <guid>https://b40du.github.io/tags/%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91/</guid>
       <description></description>
@@ -63,6 +63,24 @@
       <pubDate>Mon, 06 Jul 2020 23:56:33 +0800</pubDate>
       
       <guid>https://b40du.github.io/tags/xxe-labs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>upload-labs</title>
+      <link>https://b40du.github.io/tags/upload-labs/</link>
+      <pubDate>Sat, 04 Jul 2020 23:22:33 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/tags/upload-labs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>文件上传</title>
+      <link>https://b40du.github.io/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/</link>
+      <pubDate>Sat, 04 Jul 2020 23:22:33 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/</guid>
       <description></description>
     </item>
     

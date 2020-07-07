@@ -7,17 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This is a customized copyright.</copyright>
-    <lastBuildDate>Tue, 07 Jul 2020 22:33:20 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 07 Jul 2020 23:35:20 +0800</lastBuildDate>
     
 	<atom:link href="https://b40du.github.io/tags/%E4%B8%9A%E5%8A%A1%E9%80%BB%E8%BE%91/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Writeup 之 业务逻辑 魔改flag版</title>
-      <link>https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/</link>
-      <pubDate>Tue, 07 Jul 2020 22:33:20 +0800</pubDate>
+      <link>https://b40du.github.io/posts/writeup-chaitin-business_logic-01/</link>
+      <pubDate>Tue, 07 Jul 2020 23:35:20 +0800</pubDate>
       
-      <guid>https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/</guid>
+      <guid>https://b40du.github.io/posts/writeup-chaitin-business_logic-01/</guid>
       <description>由于靶场被频繁扫描，断连率颇高，dedecms使用本地搭建进行测试。
 1. 越权dedecms 首先进入靶场首页，是个经典的dedecms建站系统。
 1. 注册用户 首先我们注册一个普通用户，用户名：00001，密码：00001。

