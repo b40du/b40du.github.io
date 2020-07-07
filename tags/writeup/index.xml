@@ -7,10 +7,80 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This is a customized copyright.</copyright>
-    <lastBuildDate>Mon, 06 Jul 2020 23:56:33 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 07 Jul 2020 22:33:20 +0800</lastBuildDate>
     
 	<atom:link href="https://b40du.github.io/tags/writeup/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Writeup 之 业务逻辑 魔改flag版</title>
+      <link>https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/</link>
+      <pubDate>Tue, 07 Jul 2020 22:33:20 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/writeup-chaitin-upload_logic-01/</guid>
+      <description>由于靶场被频繁扫描，断连率颇高，dedecms使用本地搭建进行测试。
+1. 越权dedecms 首先进入靶场首页，是个经典的dedecms建站系统。
+1. 注册用户 首先我们注册一个普通用户，用户名：00001，密码：00001。
+成功注册。
+2. 越权到admin 如下图所示，已经进入到00001账户。
+然后访问个人主页。
+我们查看当前的cookie。
+然后我们将DedeUserID改成自己的账户名00001，将DedeUserID__ckMd5改成last_vid__ckMd5的值。
+修改完成后，访问个人主页，已经变成了admin。
+这个时候，我们已经实现越权，登录到了admin账户的前台。接下来，我们尝试修改前台密码。
+3. 修改admin前台密码 我们需要利用漏洞来重置前台admin用户的密码。
+访问靶场地址：
+http://靶场ip:端口/member/resetpassword.php构造payload如下：
+dopost=safequestion&amp;amp;safequestion=0.0&amp;amp;safeanswer=&amp;amp;id=1我们使用hackbar发送payload，并使用burp去抓取这个post数据包。
+然后放掉这个post包，抓到修改密码的数据包。
+然后在浏览器中访问这个地址，即可修改前台admin账户密码。
+4. 修改admin后台密码 我们发现在dedecms中，如果账户是admin，修改前台密码以后，后台账户密码也会同步改变。
+2. phpyun 首先进入首页，发现是一个phpyun的cms建站系统建立的网站。
+可以操作的空间非常多，因为有非常多的框框，由于题目要求是找出admin的密码，瞬间想到了几个思路
+ 强制爆破admin账户密码 取得权限，找出admin的账户密码  那么我们先用御剑跑一波，看看后台地址在哪里
+如愿以偿，发现了后台地址，我们进入后台地址看一下，发现是有验证码的。
+手工尝试弱密码后，发现每次验证码都需要变化，我们试试burp抓包。
+抓到了，然后发送至repeater，手动测试看一看。
+我们发现这个验证码在burp里面是可以重复使用的，密码一直错误，但是一直可以使用。那我们可以换一个省力一点的方法，使用字典爆破。
+我们重新抓包，发送到intruder。
+清除多余的有效负载后，给密码处添加有效负载。
+由于字典的好坏直接影响爆破的效率，在这里我们尝试了多个字典。
+终于成功爆破，发现密码Password，也就是flag{Password}
+ flag{Password}
+ 3. seacms 首先进入靶场首页，发现是一个海洋CMS建站系统建立的网站。
+先上扫描器看看吧。
+虽然发现很多文件，但是针对题目要求，没有发现什么特别的地方，无非是登录注册入口。
+那么我们先注册一个账户试试看。
+成功注册
+进入系统后，没有发现特别多的东西，发现了密码其实可以直接在控制台看到md5加密后的密码，是完全可以被XSS等利用的。
+另外发现test02@test.com的位置是很有可能存放flag的地方。
+那么我们退出去注册flag账户试试看，发现用户已经存在。
+那我们登录自己的账户，然后找回密码，抓包的过程中把用户改成flag能不能借此更改flag账户的密码呢？
+结果发现，系统应该没有配置邮件服务器，无法发送邮件。我们看不到更改密码所需要的链接。
+借此我们完全可以推测，这是一个利用找回密码机制更改密码的逻辑漏洞，我的推测是，在找回密码的邮件里有修改密码的链接，用户可能是flag，修改链接中的参数可以越过原本的账户把flag账户密码改掉，进入flag账户，然后找到存放邮箱的地方，找到flag。
+那么是不是这样就没办法了找到flag了呢，其实不然。这种CMS漏洞百出，我们完全可以使用其他的payload进行攻击。
+经过查询，发现seacms在老版本中一直存在SQL注入漏洞，我们使用现成的payload注入看看。
+/comment/api/index.php?gid=1&amp;amp;page=2&amp;amp;rlist[]=@`%27`,%20extractvalue(1,%20concat_ws(0x20,%200x5c,(select%20(password)from%20sea_admin))),@`%27` 好像可以
+那么我们不断更改payload，找找看，发现最大的问题是不知道表名列名，所以总是错误。
+/comment/api/index.php?gid=1&amp;amp;page=2&amp;amp;rlist[]=@`%27`,%20extractvalue(1,%20concat_ws(0x20,%200x5c,(select%20(password)from%20sea_test01))),@`%27` 大家在一起讨论的时候，岚哥爆出来了表名和列名，发现有很多奇怪的列名，都是sea_开头，因此后续尝试根据不同的列名进行元素的查找，列名非常多。
+我们回想起来，flag是存放在邮箱的位置的，那么我们构造一下payload：</description>
+    </item>
+    
+    <item>
+      <title>Writeup 之 XXE-Labs 魔改flag版</title>
+      <link>https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/</link>
+      <pubDate>Mon, 06 Jul 2020 23:56:33 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/</guid>
+      <description>1. xxe实验室 前三个比较简单，直接进入第四个
+首先我们要明确Blind XXE的用途，对于传统的XXE来说，必须要求服务器有回显或者报错，才能使用XXE读取服务器端的文件。如果服务器没有回显，只能使用Blind XXE漏洞来构建一条带外信道提取数据。
+那么从源代码来看，前几个和第四个有何不同呢
+ DOMDocument.php   SimpleXMLElement.php   simplexml_load_string.php   BlindXXE.php  我们发现BlindXXE.php的源代码，直接去掉了回显，没有打印变量，保存到缓冲区的步骤。
+找到了根本区别，直接寻找flag吧。
+ 简单的方法，直接在有回显的地方使用php的filter协议读取文件   然后base64解密，得到flag   flag{xxe_easy}
+ 2. 短信  进入靶场首页，发现一个类似cms的商务站页面   四处点点看看，发现一个论坛   看看能不能注册，发现管理员禁止了注册   尝试登录，发现每次都需要滑块认证   那么还是上大杀器，目录扫描吧，御剑跑起来   而在这其中呢，/readme.txt文件中有很明显的线索，告诉我们这是一个S-CMS建站系统   然后我们对其进行搜索，看看有没有可以利用的漏洞，发现大都是CNVD录入的SQL注入漏洞，同时看到很多文章都是对这种CMS进行源代码审计查找漏洞的，我们不妨把源程序下载下来，由于是老版本的靶场，特地找了一个老版本的进行下载 然后我们手动的搜索容易产生XXE漏洞的标志性函数simplexml_load_string()   PHP 中的以 simplexml_load 开头的函数默认会解析外部实体，有 XXE 漏洞的标志性函数为 simplexml_load_string()
+  经过反复实验，找到一个非常可疑的页面，该页面是api目录下的notify.php页面，这里的$GLOBALS[&#39;HTTP_RAW_POST_DATA&#39;]函数，和php://input的传参方式是一样的，但后面没有对libxml进行过滤，直接就传入了simplexml_load_string()函数   然后我们看看最新版的CMS改成了什么样子，发现多了一个libxml_disable_entity_loader(true)进行保护    网页访问该页面，不会爆出页面不存在的错误，我们使用burp抓包，并发送xml类型的post请求看看</description>
+    </item>
     
     <item>
       <title>Writeup 之 XXE-Labs 魔改flag版</title>
@@ -26,18 +96,6 @@
  简单的方法，直接在有回显的地方使用php的filter协议读取文件   然后base64解密，得到flag   flag{xxe_easy}
  2. 短信  进入靶场首页，发现一个类似cms的商务站页面   四处点点看看，发现一个论坛   看看能不能注册，发现管理员禁止了注册   尝试登录，发现每次都需要滑块认证   那么还是上大杀器，目录扫描吧，御剑跑起来   而在这其中呢，/readme.txt文件中有很明显的线索，告诉我们这是一个S-CMS建站系统   然后我们对其进行搜索，看看有没有可以利用的漏洞，发现大都是CNVD录入的SQL注入漏洞，同时看到很多文章都是对这种CMS进行源代码审计查找漏洞的，我们不妨把源程序下载下来，由于是老版本的靶场，特地找了一个老版本的进行下载 然后我们手动的搜索容易产生XXE漏洞的标志性函数simplexml_load_string()   PHP 中的以 simplexml_load 开头的函数默认会解析外部实体，有 XXE 漏洞的标志性函数为 simplexml_load_string()
   经过反复实验，找到一个非常可疑的页面，该页面是api目录下的notify.php页面，这里的$GLOBALS[&#39;HTTP_RAW_POST_DATA&#39;]函数，和php://input的传参方式是一样的，但后面没有对libxml进行过滤，直接就传入了simplexml_load_string()函数   然后我们看看最新版的CMS改成了什么样子，发现多了一个libxml_disable_entity_loader(true)进行保护    网页访问该页面，不会爆出页面不存在的错误，我们使用burp抓包，并发送xml类型的post请求看看</description>
-    </item>
-    
-    <item>
-      <title>Writeup 之 Upload-Labs 魔改flag版</title>
-      <link>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</link>
-      <pubDate>Sat, 04 Jul 2020 23:48:33 +0800</pubDate>
-      
-      <guid>https://b40du.github.io/posts/writeup-chaitin-upload_labs-01/</guid>
-      <description>今日总结：  这次靶场主要是做这个有源码的靶场，所以理解源码的含义非常重要  上传实验室-p1  第一关很简单，直接上传1.php，发现前端js报错   推测是前端js检查文件后缀类型，查看js代码，发现js对文件后缀进行了判断   个人习惯直接在控制台重写这个函数而不是用插件，直接在控制台增加.php类型   上传完成后，复制上传文件的地址   使用菜刀进行连接   查看flag   flag{a6487868}
- 上传实验室-p2  由于可以查看源码，直接看源码  发现后端在判断文件类型     我们尝试发一个1.php文件，但是改了centent-type类型   发现成功上传，复制上传文件的路径   使用菜刀连接，发现flag文件   找到flag   flag{5b323cff}
- 上传实验室-p3  首先我们看源码，发现很多办法都失效了   那么我们尝试用php3试试，发现成功上传，然后复制上传文件路径   连接菜刀，发现flag文件   查看flag   flag{22e47e94}
- 上传实验室-p4  首先我们看源码，发现很多办法都失效了    但是.</description>
     </item>
     
   </channel>

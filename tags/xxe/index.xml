@@ -14,6 +14,22 @@
     
     <item>
       <title>Writeup 之 XXE-Labs 魔改flag版</title>
+      <link>https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/</link>
+      <pubDate>Mon, 06 Jul 2020 23:56:33 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/writeup-chaitin-business-01-%E5%89%AF%E6%9C%AC/</guid>
+      <description>1. xxe实验室 前三个比较简单，直接进入第四个
+首先我们要明确Blind XXE的用途，对于传统的XXE来说，必须要求服务器有回显或者报错，才能使用XXE读取服务器端的文件。如果服务器没有回显，只能使用Blind XXE漏洞来构建一条带外信道提取数据。
+那么从源代码来看，前几个和第四个有何不同呢
+ DOMDocument.php   SimpleXMLElement.php   simplexml_load_string.php   BlindXXE.php  我们发现BlindXXE.php的源代码，直接去掉了回显，没有打印变量，保存到缓冲区的步骤。
+找到了根本区别，直接寻找flag吧。
+ 简单的方法，直接在有回显的地方使用php的filter协议读取文件   然后base64解密，得到flag   flag{xxe_easy}
+ 2. 短信  进入靶场首页，发现一个类似cms的商务站页面   四处点点看看，发现一个论坛   看看能不能注册，发现管理员禁止了注册   尝试登录，发现每次都需要滑块认证   那么还是上大杀器，目录扫描吧，御剑跑起来   而在这其中呢，/readme.txt文件中有很明显的线索，告诉我们这是一个S-CMS建站系统   然后我们对其进行搜索，看看有没有可以利用的漏洞，发现大都是CNVD录入的SQL注入漏洞，同时看到很多文章都是对这种CMS进行源代码审计查找漏洞的，我们不妨把源程序下载下来，由于是老版本的靶场，特地找了一个老版本的进行下载 然后我们手动的搜索容易产生XXE漏洞的标志性函数simplexml_load_string()   PHP 中的以 simplexml_load 开头的函数默认会解析外部实体，有 XXE 漏洞的标志性函数为 simplexml_load_string()
+  经过反复实验，找到一个非常可疑的页面，该页面是api目录下的notify.php页面，这里的$GLOBALS[&#39;HTTP_RAW_POST_DATA&#39;]函数，和php://input的传参方式是一样的，但后面没有对libxml进行过滤，直接就传入了simplexml_load_string()函数   然后我们看看最新版的CMS改成了什么样子，发现多了一个libxml_disable_entity_loader(true)进行保护    网页访问该页面，不会爆出页面不存在的错误，我们使用burp抓包，并发送xml类型的post请求看看</description>
+    </item>
+    
+    <item>
+      <title>Writeup 之 XXE-Labs 魔改flag版</title>
       <link>https://b40du.github.io/posts/writeup-chaitin-xxe_labs-01/</link>
       <pubDate>Mon, 06 Jul 2020 23:56:33 +0800</pubDate>
       
