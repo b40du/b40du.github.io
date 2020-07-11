@@ -130,7 +130,7 @@ $demo &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#
 &lt;h1 id=&#34;3-漏洞分析&#34;&gt;3. 漏洞分析&lt;/h1&gt;
 &lt;p&gt;一上来拿到站点是比较懵逼的，除了首页所有的页面都不能点，搜索直接报错。&lt;/p&gt;
 &lt;p&gt;那我们直接上扫描器，看看这个站点的敏感目录，发现&lt;code&gt;install.php&lt;/code&gt;暴露在外，但是无法读取。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;C:%5CNutstore%5C999-%E7%AC%94%E8%AE%B0%E5%9B%BE%E7%89%87%5Cimage-20200710214625249.png&#34; alt=&#34;image-20200710214625249&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200711194046.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;我们还是下载源码，对源码进行审计，看看反序列化漏洞的点在哪里。&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;Typecho源码下载地址：https://github.com/typecho/typecho/releases/tag/v1.1-15.5.12-beta&lt;/p&gt;
