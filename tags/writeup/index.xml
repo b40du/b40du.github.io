@@ -7,10 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This is a customized copyright.</copyright>
-    <lastBuildDate>Tue, 07 Jul 2020 23:35:20 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 10 Jul 2020 23:10:01 +0800</lastBuildDate>
     
 	<atom:link href="https://b40du.github.io/tags/writeup/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Typecho反序列化漏洞</title>
+      <link>https://b40du.github.io/posts/writeup-chaitin-deserialization-01/</link>
+      <pubDate>Fri, 10 Jul 2020 23:10:01 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/writeup-chaitin-deserialization-01/</guid>
+      <description>1. 前置知识 1.1 什么是反序列化？ 序列化：将对象变成可以传输的字符串（Json格式便是一种序列化）
+反序列化：将可以传输的字符串再变成对象
+1.2 为何造成漏洞产生？ 漏洞产生的原因主要是因为PHP语言自带的魔术方法，魔术方法一般是由__开头，在某些条件下可以自动调用，而不需要我们手工调用。
+如果是学习过C++的同学应该理解，如果我们创建一个空的类，它本身会默认产生如下几个类成员函数：
+class A { 缺省构造函数 缺省拷贝构造函数 缺省析构函数 缺省赋值运算符 缺省取址运算符 缺省取址运算符 const。 } 那么在类创建对象的时候，构造函数会首先执行，在我们销毁对象的时候，析构函数会最后执行，而构造函数和析构函数执行的时候，并不需要我们手动操作。
+那么PHP语言自带的魔术方法，也是类似的情况，在创建/销毁对象以及其他若干操作的时候，会自动调用某些魔术方法。
+一般情况下如下魔术方法是我们特别需要警惕的：
+   方法 调用条件     __wakeup() 使用unserialize()时调用   __sleep() 使用serialize()时调用   __construct() 当对象创建时会自动调用（单在unserialize()时是不会自动调用的）   __destruct() 当对象被销毁时会自动调用   __call() 在对象上下文中调用不可访问的方法时调用   __callStatic() 在静态上下文中调用不可访问的方法时调用   __get() 用于从不可访问的属性读取数据，在对象上下文中调用不可访问的方法时触发   __set() 用于将数据写入不可访问的属性   __isset() 在不可访问的属性上调用isset()或empty()触发   __unset() 在不可访问的属性上使用unset()时触发   __toString() 当反序列化后的对象被输出在模板中的时候（转换成字符串的时候）自动调用   __invoke() 当脚本尝试将对象调用为函数时触发    如果服务器能够接收我们反序列化过的字符串，并且未经过滤，直接把字符串中的变量交给魔术方法自动执行，就很有可能产生意想不到的问题以及漏洞。</description>
+    </item>
     
     <item>
       <title>Writeup 之 业务逻辑 魔改flag版</title>
@@ -92,22 +108,6 @@ dopost=safequestion&amp;amp;safequestion=0.0&amp;amp;safeanswer=&amp;amp;id=1�
  上传实验室-p2  由于可以查看源码，直接看源码  发现后端在判断文件类型     我们尝试发一个1.php文件，但是改了centent-type类型   发现成功上传，复制上传文件的路径   使用菜刀连接，发现flag文件   找到flag   flag{5b323cff}
  上传实验室-p3  首先我们看源码，发现很多办法都失效了   那么我们尝试用php3试试，发现成功上传，然后复制上传文件路径   连接菜刀，发现flag文件   查看flag   flag{22e47e94}
  上传实验室-p4  首先我们看源码，发现很多办法都失效了    但是.</description>
-    </item>
-    
-    <item>
-      <title>Typecho反序列化漏洞</title>
-      <link>https://b40du.github.io/posts/writeup-chaitin-deserialization-01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://b40du.github.io/posts/writeup-chaitin-deserialization-01/</guid>
-      <description>1. 前置知识 1.1 什么是反序列化？ 序列化：将对象变成可以传输的字符串（Json格式便是一种序列化）
-反序列化：将可以传输的字符串再变成对象
-1.2 为何造成漏洞产生？ 漏洞产生的原因主要是因为PHP语言自带的魔术方法，魔术方法一般是由__开头，在某些条件下可以自动调用，而不需要我们手工调用。
-如果是学习过C++的同学应该理解，如果我们创建一个空的类，它本身会默认产生如下几个类成员函数：
-class A { 缺省构造函数 缺省拷贝构造函数 缺省析构函数 缺省赋值运算符 缺省取址运算符 缺省取址运算符 const。 } 那么在类创建对象的时候，构造函数会首先执行，在我们销毁对象的时候，析构函数会最后执行，而构造函数和析构函数执行的时候，并不需要我们手动操作。
-那么PHP语言自带的魔术方法，也是类似的情况，在创建/销毁对象以及其他若干操作的时候，会自动调用某些魔术方法。
-一般情况下如下魔术方法是我们特别需要警惕的：
-   方法 调用条件     __wakeup() 使用unserialize()时调用   __sleep() 使用serialize()时调用   __construct() 当对象创建时会自动调用（单在unserialize()时是不会自动调用的）   __destruct() 当对象被销毁时会自动调用   __call() 在对象上下文中调用不可访问的方法时调用   __callStatic() 在静态上下文中调用不可访问的方法时调用   __get() 用于从不可访问的属性读取数据，在对象上下文中调用不可访问的方法时触发   __set() 用于将数据写入不可访问的属性   __isset() 在不可访问的属性上调用isset()或empty()触发   __unset() 在不可访问的属性上使用unset()时触发   __toString() 当反序列化后的对象被输出在模板中的时候（转换成字符串的时候）自动调用   __invoke() 当脚本尝试将对象调用为函数时触发    如果服务器能够接收我们反序列化过的字符串，并且未经过滤，直接把字符串中的变量交给魔术方法自动执行，就很有可能产生意想不到的问题以及漏洞。</description>
     </item>
     
   </channel>
