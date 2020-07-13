@@ -102,7 +102,7 @@ run autoroute -p
 &lt;p&gt;然后我们生成一个&lt;code&gt;1.exe&lt;/code&gt;的木马文件，我们可以通过代理的方式将该木马文件传至&lt;code&gt;172.1.1.112&lt;/code&gt;主机上（也可以通过生成大小马的方式，代理访问&lt;code&gt;DVWA&lt;/code&gt;上传木马，再次获得&lt;code&gt;172.1.1.112&lt;/code&gt;主机的权限）&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;msfvenom -p windows/meterpreter/bind_tcp  lport&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1080&lt;/span&gt; -f exe -o 1.exe
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200714040752.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;C:%5CNutstore%5C999-%E7%AC%94%E8%AE%B0%E5%9B%BE%E7%89%87%5Cimage-20200714035257425.png&#34; alt=&#34;image-20200714035257425&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200714043015.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;当目标运行木马以后，然后我们通过代理再次开启&lt;code&gt;msf&lt;/code&gt;：&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://development-bj-01.oss-cn-beijing.aliyuncs.com/PicGo/20200714025824.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;我们依旧通过&lt;code&gt;msf&lt;/code&gt;打进去：&lt;/p&gt;
