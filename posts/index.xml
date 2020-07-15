@@ -150,18 +150,6 @@ dopost=safequestion&amp;amp;safequestion=0.0&amp;amp;safeanswer=&amp;amp;id=1�
     </item>
     
     <item>
-      <title>笔记-PHP基础</title>
-      <link>https://b40du.github.io/posts/note-heima-php-basic/</link>
-      <pubDate>Mon, 11 May 2020 23:00:00 +0800</pubDate>
-      
-      <guid>https://b40du.github.io/posts/note-heima-php-basic/</guid>
-      <description>学习目标  掌握互联网的工作原理 掌握域名、DNS和IP地址之间的关系 理解hosts文件在互联网访问过程中的作用 理解静态网站和动态网站的区别 理解动态网站的服务器组成 了解PHP的工作过程 掌握PHP变量的使用方式 理解可变变量的概念 掌握可变变量的访问形式 理解变量的值传递和引用传递的区别  1 PHP简介 1.1 概述  PHP是HyperText Preprocessor的缩写，（超文本预处理器）是一种在服务器端运行的开源的脚本语言 LAMP组合（Linux，Apache，MySQL，PHP），这四个产品都是公开源代码的产品  php 是一门语言，用来做业务逻辑 apache 为PHP提供了运行环境 linux 为Apache的运行提供了平台 mysql 数据库用来存储数据 wamp
-windows+apache+ mysql +php 1.2 五个基本概念  静态网站和动态网站  静态页面：服务器不执行的页面 动态页面：服务器执行的页面  动态网站中可以存放静态页面
-  客户端和服务器端  客户端：浏览者 服务器端：给浏览者提供服务  端口和端口号  端口号的范围：0~65535  BS架构和CS架构  BS：通过浏览器去访问服务器
-b:browser（浏览器） s:server（服务器） 优点： 1. 只要有浏览器就可以访问 2. 开发成本低 缺点： 1. 开发的代码都放在服务器上 胖服务器-瘦客户端  所有的web都是BS架构的</description>
-    </item>
-    
-    <item>
       <title>笔记-JavaScript基础</title>
       <link>https://b40du.github.io/posts/note-heima-javascript-basic/</link>
       <pubDate>Fri, 01 May 2020 16:26:46 +0800</pubDate>
