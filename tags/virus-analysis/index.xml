@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>virus-analysis on 爆肚的杂货铺</title>
+    <link>https://b40du.github.io/tags/virus-analysis/</link>
+    <description>Recent content in virus-analysis on 爆肚的杂货铺</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This is a customized copyright.</copyright>
+    <lastBuildDate>Sat, 09 Nov 2019 22:11:23 +0800</lastBuildDate>
+    
+	<atom:link href="https://b40du.github.io/tags/virus-analysis/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>病毒分析 之 Wannacry勒索病毒</title>
+      <link>https://b40du.github.io/posts/report-virus-wannacry/</link>
+      <pubDate>Sat, 09 Nov 2019 22:11:23 +0800</pubDate>
+      
+      <guid>https://b40du.github.io/posts/report-virus-wannacry/</guid>
+      <description>1. 前言 WannaCry（直译“想哭”、“想解密”，俗名“魔窟”，或称WannaCrypt、WanaCrypt0r 2.0、Wanna Decryptor）是一种利用NSA的“永恒之蓝”（EternalBlue）漏洞利用程序透过互联网对全球运行Microsoft Windows操作系统的计算机进行攻击的加密型勒索软件兼蠕虫病毒（Encrypting Ransomware Worm）。该病毒利用AES-128和RSA算法恶意加密用户文件以勒索比特币，使用Tor进行通讯，为WanaCrypt0r 1.0的变种。
+2017年5月，此程序大规模感染包括西班牙电信在内的许多西班牙公司、英国国民保健署、联邦快递和德国铁路股份公司。据报道，至少有99个国家的其他目标在同一时间遭到WanaCrypt0r 2.0的攻击（当前已有大约150个国家遭到攻击）。俄罗斯联邦内务部、俄罗斯联邦紧急情况部和俄罗斯电信公司MegaFon共有超过1000台计算机受到感染。于中国的感染甚至波及到公安机关使用的内网，国家互联网应急中心亦发布通报。
+WannaCry被认为利用了美国国家安全局的“永恒之蓝”（EternalBlue）工具以攻击运行Microsoft Windows操作系统的计算机。“永恒之蓝”传播的勒索病毒以ONION和WNCRY两个家族为主。“永恒之蓝”利用了某些版本的微软服务器消息块（SMB）协议中的数个漏洞，而当中最严重的漏洞是允许远程计算机运行代码。修复该漏洞的安全补丁已经于此前的2017年3月14日发布，但并非所有计算机都进行了安装。
+——from wikipedia
+2. 样本概况    项目 信息     样本名称 wcry.exe   样本类型 PE32 executable (GUI) Intel 80386, for MS Windows   样本大小 3514368 Byte   MD5 84c82835a5d21bbcf75a61706d8ab549   SHA1 5ff465afaabcbf0150d1a3ab2c2e74f3a4426467   SHA256 ed01ebfbc9eb5bbea545af4d01bf5f1071661840480439c6e5babe8e080e41aa    3. 基础分析 3.1 壳信息 如下图所示，程序没有加壳。
+3.2 区段信息 比较正常，看起来没有奇怪的信息。
+3.3 加密算法信息 3.4 导入表信息 如下图所示，使用Total Commander快速查看wcry.</description>
+    </item>
+    
+  </channel>
+</rss>
